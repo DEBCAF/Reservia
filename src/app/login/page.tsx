@@ -16,7 +16,7 @@ export default function LoginPage() {
     e.preventDefault()
     const trimmedUsername = username.trim().toLowerCase()
     if (!ALLOWED_USERNAMES.includes(trimmedUsername)) {
-      alert('Access denied: Username not authorised')
+      alert('Access denied: Username not authorised! Use your Instagram username!! Only works for friends btw')
       return
     }
     const email = `${trimmedUsername}@booking.internal`

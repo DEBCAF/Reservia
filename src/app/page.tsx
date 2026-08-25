@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { createClient } from '@/src/lib/supabase'
 import { useRouter } from 'next/navigation'
 
@@ -15,10 +15,7 @@ interface Booking {
 export default function Home() {
   const [user, setUser] = useState<any>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
-  const [selectedDate, setSelectedDate] = useState('')
-  const [startTime, setStartTime] = useState('09:00')
-  const [endTime, setEndTime] = useState('10:00')
-  const [note, setNote] = useState('')
+  const [currentMonth, setCurrentMonth] = useState(new Date())
   const router = useRouter()
   const supabase = createClient()
 
@@ -40,134 +37,134 @@ export default function Home() {
     if (data) setBookings(data)
   }
 
-  async function handleCreateBooking(e: React.FormEvent) {
-    e.preventDefault()
-    if (!selectedDate) return alert('Select a date')
-
-    const start = `${selectedDate}T${startTime}:00Z`
-    const end = `${selectedDate}T${endTime}:00Z`
-    const userName = user.user_metadata?.full_name || user.email
-
-    const { error } = await supabase.from('bookings').insert({
-      user_id: user.id,
-      user_name: userName,
-      start_time: start,
-      end_time: end,
-      note,
-    })
-
-    if (error) {
-      alert(error.message)
-    } else {
-      // Call backend notify API
-      await fetch('/api/notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'Booking Created',
-          userName: userName,
-          date: selectedDate,
-          startTime: startTime,
-          endTime: endTime,
-          note: note,
-        }),
-      })
-
-      setNote('')
-      fetchBookings()
-    }
+  async function handleSignOut() {
+    await supabase.auth.signOut()
+    router.push('/login')
   }
 
+  const year = currentMonth.getFullYear()
+  const month = currentMonth.getMonth()
 
-  async function handleDelete(booking: Booking) {
-    const { error } = await supabase.from('bookings').delete().eq('id', booking.id)
-    
-    if (!error) {
-      const userName = user.user_metadata?.full_name || user.email
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const firstDayOfWeek = new Date(year, month, 1).getDay()
 
-      // Call backend notify API
-      await fetch('/api/notify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'Booking Cancelled',
-          userName: userName,
-          date: new Date(booking.start_time).toLocaleDateString(),
-          startTime: new Date(booking.start_time).toLocaleTimeString(),
-          endTime: new Date(booking.end_time).toLocaleTimeString(),
-          note: booking.note,
-        }),
-      })
+  const monthName = currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })
 
-      fetchBookings()
+  const bookingsByDate = useMemo(() => {
+    const map: Record<string, Booking[]> = {}
+    for (const b of bookings) {
+      const date = new Date(b.start_time).toISOString().split('T')[0]
+      if (!map[date]) map[date] = []
+      map[date].push(b)
     }
+    return map
+  }, [bookings])
+
+  const prevMonth = () => setCurrentMonth(new Date(year, month - 1, 1))
+  const nextMonth = () => setCurrentMonth(new Date(year, month + 1, 1))
+
+  const goToDate = (day: number) => {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    router.push(`/bookings/${dateStr}`)
   }
 
+  const hasBookings = (day: number) => {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    return bookingsByDate[dateStr] && bookingsByDate[dateStr].length > 0
+  }
+
+  const getBookingCount = (day: number) => {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    return bookingsByDate[dateStr] ? bookingsByDate[dateStr].length : 0
+  }
+
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   if (!user) return <div className="p-8 text-white">Loading...</div>
 
+  const calendarDays: (number | null)[] = []
+  for (let i = 0; i < firstDayOfWeek; i++) calendarDays.push(null)
+  for (let d = 1; d <= daysInMonth; d++) calendarDays.push(d)
+
   return (
     <main className="min-h-screen bg-slate-900 text-white">
-      <div className="p-8 max-w-4xl mx-auto">
+      <div className="p-6 max-w-5xl mx-auto">
+        {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Booking Dashboard</h1>
+          <div>
+            <h1 className="text-3xl font-bold">Booking Dashboard</h1>
+            <p className="text-slate-400 text-sm mt-1">Select a date to view bookings</p>
+          </div>
           <button
-            onClick={async () => {
-              await supabase.auth.signOut()
-              router.push('/login')
-            }}
+            onClick={handleSignOut}
             className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded transition-colors"
           >
             Sign Out
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <form onSubmit={handleCreateBooking} className="bg-slate-800 p-6 rounded-lg border border-slate-700 shadow-sm space-y-4">
-            <h2 className="text-xl font-semibold text-white">Make a Booking</h2>
-            <div>
-              <label className="block text-sm mb-1 text-slate-300">Logged in as</label>
-              <input type="text" disabled className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white" value={user.user_metadata?.full_name || user.email} />
-            </div>
-            <div>
-              <label className="block text-sm mb-1 text-slate-300">Date</label>
-              <input type="date" required className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white" onChange={(e) => setSelectedDate(e.target.value)} />
-            </div>
-            <div className="flex gap-4">
-              <div className="w-1/2">
-                <label className="block text-sm mb-1 text-slate-300">Start Time</label>
-                <input type="time" className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-              </div>
-              <div className="w-1/2">
-                <label className="block text-sm mb-1 text-slate-300">End Time</label>
-                <input type="time" className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm mb-1 text-slate-300">Note (Private to Admin)</label>
-              <input type="text" className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white" value={note} onChange={(e) => setNote(e.target.value)} />
-            </div>
-            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded transition-colors">Book Slot</button>
-          </form>
+        {/* Calendar */}
+        <div className="bg-slate-800 rounded-xl border border-slate-700 shadow-lg overflow-hidden">
+          {/* Month Navigation */}
+          <div className="flex justify-between items-center p-4 border-b border-slate-700">
+            <button onClick={prevMonth} className="text-slate-400 hover:text-white transition-colors px-3 py-1 rounded hover:bg-slate-700">
+              ← Prev
+            </button>
+            <h2 className="text-xl font-semibold">{monthName}</h2>
+            <button onClick={nextMonth} className="text-slate-400 hover:text-white transition-colors px-3 py-1 rounded hover:bg-slate-700">
+              Next →
+            </button>
+          </div>
 
-          <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 shadow-sm">
-            <h2 className="text-xl font-semibold mb-4 text-white">Existing Bookings</h2>
-            <div className="space-y-3">
-              {bookings.map((b) => {
-                const isOwner = b.user_id === user.id
-                return (
-                  <div key={b.id} className="border border-slate-600 p-3 rounded flex justify-between items-center bg-slate-700">
-                    <div>
-                      <p className="font-semibold text-white">{new Date(b.start_time).toLocaleDateString()} ({new Date(b.start_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - {new Date(b.end_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})</p>
-                      <p className="text-sm text-slate-300">{isOwner ? `Booked by You (${b.note})` : 'Slot Occupied'}</p>
+          {/* Day Names */}
+          <div className="grid grid-cols-7 border-b border-slate-700">
+            {dayNames.map((day) => (
+              <div key={day} className="text-center py-3 text-sm font-medium text-slate-400 border-r border-slate-700 last:border-r-0">
+                {day}
+              </div>
+            ))}
+          </div>
+
+          {/* Calendar Grid */}
+          <div className="grid grid-cols-7">
+            {calendarDays.map((day, idx) => {
+              if (day === null) {
+                return <div key={`empty-${idx}`} className="min-h-[100px] border-r border-b border-slate-700 bg-slate-800/50" />
+              }
+
+              const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+              const count = getBookingCount(day)
+              const has = hasBookings(day)
+
+              return (
+                <button
+                  key={day}
+                  onClick={() => goToDate(day)}
+                  className={`
+                    min-h-[100px] p-2 border-r border-b border-slate-700 text-left transition-all
+                    ${has
+                      ? 'bg-blue-900/30 hover:bg-blue-900/50 cursor-pointer'
+                      : 'bg-slate-800 hover:bg-slate-750 cursor-pointer'}
+                  `}
+                >
+                  <span className={`text-lg font-semibold ${has ? 'text-blue-400' : 'text-slate-300'}`}>
+                    {day}
+                  </span>
+                  {has && (
+                    <div className="mt-1 space-y-1">
+                      {bookingsByDate[dateStr]?.slice(0, 2).slice(0, 2).map((b) => (
+                        <div key={b.id} className="text-xs text-slate-400 truncate">
+                          {b.user_name} · {new Date(b.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                      ))}
+                      {count > 2 && (
+                        <div className="text-xs text-blue-400 font-medium">+{count - 2} more</div>
+                      )}
                     </div>
-                    {isOwner && (
-                      <button onClick={() => handleDelete(b)} className="text-red-400 hover:text-red-300 text-sm transition-colors">Delete</button>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
+                  )}
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
