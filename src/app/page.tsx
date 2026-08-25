@@ -46,26 +46,63 @@ export default function Home() {
 
     const start = `${selectedDate}T${startTime}:00Z`
     const end = `${selectedDate}T${endTime}:00Z`
+    const userName = user.user_metadata?.full_name || user.email
 
     const { error } = await supabase.from('bookings').insert({
       user_id: user.id,
-      user_name: user.user_metadata?.full_name || user.email,
+      user_name: userName,
       start_time: start,
       end_time: end,
       note,
     })
 
-    if (error) alert(error.message)
-    else {
+    if (error) {
+      alert(error.message)
+    } else {
+      // Call backend notify API
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'Booking Created',
+          userName: userName,
+          date: selectedDate,
+          startTime: startTime,
+          endTime: endTime,
+          note: note,
+        }),
+      })
+
       setNote('')
       fetchBookings()
     }
   }
 
-  async function handleDelete(id: string) {
-    await supabase.from('bookings').delete().eq('id', id)
-    fetchBookings()
+
+  async function handleDelete(booking: Booking) {
+    const { error } = await supabase.from('bookings').delete().eq('id', booking.id)
+    
+    if (!error) {
+      const userName = user.user_metadata?.full_name || user.email
+
+      // Call backend notify API
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'Booking Cancelled',
+          userName: userName,
+          date: new Date(booking.start_time).toLocaleDateString(),
+          startTime: new Date(booking.start_time).toLocaleTimeString(),
+          endTime: new Date(booking.end_time).toLocaleTimeString(),
+          note: booking.note,
+        }),
+      })
+
+      fetchBookings()
+    }
   }
+
 
   if (!user) return <div className="p-8">Loading...</div>
 
@@ -124,7 +161,7 @@ export default function Home() {
                     <p className="text-sm text-gray-600">{isOwner ? `Booked by You (${b.note})` : 'Slot Occupied'}</p>
                   </div>
                   {isOwner && (
-                    <button onClick={() => handleDelete(b.id)} className="text-red-600 text-sm">Delete</button>
+                    <button onClick={() => handleDelete(b)} className="text-red-600 text-sm">Delete</button>
                   )}
                 </div>
               )
