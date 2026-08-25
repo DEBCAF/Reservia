@@ -3,21 +3,28 @@ import { useState } from 'react'
 import { createClient } from '@/src/lib/supabase'
 import { useRouter } from 'next/navigation'
 
+const ALLOWED_USERNAMES = ['golden_dawn_debcaf', 'user1', 'user2']
+
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isSigningUp, setIsSigningUp] = useState(false)
-  const [fullName, setFullName] = useState('')
   const router = useRouter()
   const supabase = createClient()
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
+    const trimmedUsername = username.trim().toLowerCase()
+    if (!ALLOWED_USERNAMES.includes(trimmedUsername)) {
+      alert('Access denied: Username not authorised')
+      return
+    }
+    const email = `${trimmedUsername}@booking.internal`
     if (isSigningUp) {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: fullName } }
+        options: { data: { full_name: trimmedUsername } }
       })
       if (error) alert(error.message)
       else alert('Account created! You can now log in.')
@@ -31,28 +38,31 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-slate-900">
       <div className="w-full max-w-md p-8 bg-slate-800 rounded-xl shadow-lg border border-slate-700">
-        <h1 className="text-2xl font-bold text-center mb-6 text-white">{isSigningUp ? 'Sign Up' : 'Log In'}</h1>
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-white mb-3">{isSigningUp ? 'Sign Up' : 'Log In'}</h1>
+          <div className="bg-slate-700 rounded-lg p-4 mb-4 space-y-2">
+            <p className="text-slate-200 text-sm font-medium">
+              Enter your Instagram username to book a timeslot to hang out with DEBCAF.
+            </p>
+            <p className="text-slate-400 text-xs">
+              Only authorised Instagram accounts can access this site.
+            </p>
+            <p className="text-slate-400 text-xs">
+              {isSigningUp
+                ? 'New here? Create an account with your IG username and a password of your choice.'
+                : 'Use your IG username and password to sign in.'}
+            </p>
+          </div>
+        </div>
         <form onSubmit={handleAuth} className="space-y-4">
-          {isSigningUp && (
-            <div>
-              <label className="block text-sm font-medium mb-1 text-slate-300">Full Name</label>
-              <input
-                type="text"
-                required
-                className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white placeholder-slate-400"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
-            </div>
-          )}
           <div>
-            <label className="block text-sm font-medium mb-1 text-slate-300">Email</label>
+            <label className="block text-sm font-medium mb-1 text-slate-300">Username</label>
             <input
-              type="email"
+              type="text"
               required
               className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white placeholder-slate-400"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div>
