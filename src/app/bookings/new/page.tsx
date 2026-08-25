@@ -30,7 +30,7 @@ export default function NewBookingPage() {
       }
     }
     loadData()
-  }, [])
+  }, [searchParams])
 
   async function handleCreateBooking(e: React.FormEvent) {
     e.preventDefault()
