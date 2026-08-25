@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     // Note: 'onboarding@resend.dev' is the default free sender domain provided by Resend
     const data = await resend.emails.send({
       from: 'Booking App <onboarding@resend.dev>',
-      to: ['your-email@example.com'], // REPLACE WITH YOUR ACTUAL EMAIL ADDRESS
+      to: ['andrew.wong14597295@gmail.com'], // REPLACE WITH YOUR ACTUAL EMAIL ADDRESS
       subject: subject,
       html: htmlContent,
     })
