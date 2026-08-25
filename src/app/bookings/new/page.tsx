@@ -1,9 +1,9 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { createClient } from '@/src/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function NewBookingPage() {
+function NewBookingForm() {
   const [user, setUser] = useState<any>(null)
   const [date, setDate] = useState('')
   const [startTime, setStartTime] = useState('09:00')
@@ -176,5 +176,13 @@ export default function NewBookingPage() {
         </form>
       </div>
     </main>
+  )
+}
+
+export default function NewBookingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 text-white p-8">Loading...</div>}>
+      <NewBookingForm />
+    </Suspense>
   )
 }
