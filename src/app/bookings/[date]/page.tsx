@@ -31,7 +31,10 @@ export default function DateDetailPage() {
     const { data } = await supabase
       .from('bookings')
       .select('*')
-      .eq('start_time', `${dateParam}T00:00:00Z`)
+      .gte('start_time', `${dateParam}T00:00:00Z`)
+      .lt('start_time', `${dateParam}T23:59:590Z`)
+      .lt('start_time', `${dateParam}T23:59:590Z`)
+      .lt('start_time', `${dateParam}T23:59:59Z`)
       .order('start_time', { ascending: true })
     if (data) setBookings(data)
   }
