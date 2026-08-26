@@ -41,12 +41,14 @@ function EditBookingForm() {
         return
       }
 
-      const { data, error } = await supabase
+      let bookingQuery = supabase
         .from('bookings')
         .select('*')
         .eq('id', bookingId)
-        .eq('user_id', user.id)
-        .single()
+      if (user.app_metadata?.role !== 'admin') {
+        bookingQuery = bookingQuery.eq('user_id', user.id)
+      }
+      const { data, error } = await bookingQuery.single()
 
       if (error || !data) {
         alert('Booking not found')
@@ -96,7 +98,7 @@ function EditBookingForm() {
         note,
       }, { count: 'exact' })
       .eq('id', booking.id)
-      .eq('user_id', user.id)
+      .eq('user_id', user.app_metadata?.role === 'admin' ? booking.user_id : user.id)
 
     if (error || count !== 1) {
       alert(
@@ -136,11 +138,14 @@ function EditBookingForm() {
 
     setLoading(true)
 
-    const { error } = await supabase
+    let deleteQuery = supabase
       .from('bookings')
       .delete()
       .eq('id', booking.id)
-      .eq('user_id', user.id)
+    if (user.app_metadata?.role !== 'admin') {
+      deleteQuery = deleteQuery.eq('user_id', user.id)
+    }
+    const { error } = await deleteQuery
 
     if (error) {
       alert('Failed to delete booking: ' + error.message)

@@ -51,11 +51,14 @@ export default function DateDetailPage() {
   async function handleDeleteBooking(bookingId: string) {
     if (!confirm('Are you sure you want to delete this booking?')) return
 
-    const { error } = await supabase
+    let deleteQuery = supabase
       .from('bookings')
       .delete()
       .eq('id', bookingId)
-      .eq('user_id', user.id)
+    if (user?.app_metadata?.role !== 'admin') {
+      deleteQuery = deleteQuery.eq('user_id', user.id)
+    }
+    const { error } = await deleteQuery
     
     if (error) {
       alert('Failed to delete booking: ' + error.message)
@@ -160,7 +163,7 @@ export default function DateDetailPage() {
                       </p>
                     )}
                   </div>
-                  {user?.id === booking.user_id && (
+                  {(user?.id === booking.user_id || user?.app_metadata?.role === 'admin') && (
                     <div className="flex gap-2">
                       <button
                         onClick={() => router.push(`/bookings/${booking.id}/edit`)}
