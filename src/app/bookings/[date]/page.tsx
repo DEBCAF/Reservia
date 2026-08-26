@@ -101,20 +101,17 @@ export default function DateDetailPage() {
   return (
     <main className="min-h-screen bg-slate-900 text-white">
       <div className="p-6 max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <button
-              onClick={() => router.push('/')}
-              className="text-slate-400 hover:text-white transition-colors mb-2"
-            >
-              ← Back to Calendar
-            </button>
-            <h1 className="text-3xl font-bold">{formatDate(date)}</h1>
-            <p className="text-slate-400 text-sm mt-1">
-              {bookings.length} {bookings.length === 1 ? 'booking' : 'bookings'} for this date
-            </p>
-          </div>
+        <button
+          onClick={() => router.push('/')}
+          className="text-slate-400 hover:text-white transition-colors mb-4"
+        >
+          ← Back to Calendar
+        </button>
+        <h1 className="text-3xl font-bold">{formatDate(date)}</h1>
+        <p className="text-slate-400 text-sm mb-6">
+          {bookings.length} {bookings.length === 1 ? 'booking' : 'bookings'} for this date
+        </p>
+        <div className="flex justify-end mb-6">
           <button
             onClick={() => router.push(`/bookings/new?date=${date}`)}
             className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2"

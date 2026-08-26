@@ -84,20 +84,16 @@ function NewBookingForm() {
   return (
     <main className="min-h-screen bg-slate-900 text-white">
       <div className="p-6 max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <button
-            onClick={() => router.back()}
-            className="text-slate-400 hover:text-white transition-colors mb-2"
-          >
-            ← Back
-          </button>
-          <h1 className="text-3xl font-bold">Create Booking</h1>
-          <p className="text-slate-400 text-sm mt-1">
-            {date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select a date from the calendar'}
-          </p>
-        </div>
-
+        <button
+          onClick={() => router.back()}
+          className="text-slate-400 hover:text-white transition-colors mb-4"
+        >
+          ← Back
+        </button>
+        <h1 className="text-3xl font-bold mb-1">Create Booking</h1>
+        <p className="text-slate-400 text-sm mb-6">
+          {date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select a date from the calendar'}
+        </p>
         {/* Booking Form */}
         <form onSubmit={handleCreateBooking} className="bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-lg space-y-6">
           {/* User Info */}

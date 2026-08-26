@@ -89,20 +89,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-900 text-white">
       <div className="p-6 max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">Booking Dashboard</h1>
-            <p className="text-slate-400 text-sm mt-1">Select a date to view bookings</p>
-          </div>
-          <button
-            onClick={handleSignOut}
-            className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded transition-colors"
-          >
-            Sign Out
-          </button>
-        </div>
-
         {/* Calendar */}
         <div className="bg-slate-800 rounded-xl border border-slate-700 shadow-lg overflow-hidden">
           {/* Month Navigation */}
