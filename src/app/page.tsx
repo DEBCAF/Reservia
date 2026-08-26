@@ -154,7 +154,7 @@ export default function Home() {
                     <div className="mt-1 space-y-1">
                       {bookingsByDate[dateStr]?.slice(0, 2).slice(0, 2).map((b) => (
                         <div key={b.id} className="text-xs text-slate-400 truncate">
-                          {b.user_name} · {new Date(b.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          {b.user_name} · {new Date(b.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}
                         </div>
                       ))}
                       {count > 2 && (
