@@ -37,6 +37,23 @@ export default function DateDetailPage() {
     if (data) setBookings(data)
   }
 
+  async function handleDeleteBooking(bookingId: string) {
+    if (!confirm('Are you sure you want to delete this booking?')) return
+    
+    const { error } = await supabase
+      .from('bookings')
+      .delete()
+      .eq('id', bookingId)
+    
+    if (error) {
+      alert('Failed to delete booking: ' + error.message)
+      return
+    }
+    
+    // Refresh the bookings list
+    fetchBookings(date)
+  }
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
     return date.toLocaleDateString('en-US', {
@@ -111,6 +128,20 @@ export default function DateDetailPage() {
                         {booking.note}
                       </p>
                     )}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => router.push(`/bookings/${booking.id}/edit`)}
+                      className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded transition-colors text-sm"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteBooking(booking.id)}
+                      className="bg-red-900/50 hover:bg-red-800/50 text-red-300 px-3 py-1 rounded transition-colors text-sm"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
