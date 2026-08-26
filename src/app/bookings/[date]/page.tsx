@@ -15,16 +15,27 @@ interface Booking {
 export default function DateDetailPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [date, setDate] = useState('')
+  const [user, setUser] = useState<any>(null)
   const router = useRouter()
   const params = useParams()
   const supabase = createClient()
 
   useEffect(() => {
-    const dateParam = params?.date as string
-    if (dateParam) {
-      setDate(dateParam)
-      fetchBookings(dateParam)
+    async function loadUser() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push('/login')
+        return
+      }
+
+      setUser(user)
+      const dateParam = params?.date as string
+      if (dateParam) {
+        setDate(dateParam)
+        fetchBookings(dateParam)
+      }
     }
+    loadUser()
   }, [params])
 
   async function fetchBookings(dateParam: string) {
@@ -39,11 +50,12 @@ export default function DateDetailPage() {
 
   async function handleDeleteBooking(bookingId: string) {
     if (!confirm('Are you sure you want to delete this booking?')) return
-    
+
     const { error } = await supabase
       .from('bookings')
       .delete()
       .eq('id', bookingId)
+      .eq('user_id', user.id)
     
     if (error) {
       alert('Failed to delete booking: ' + error.message)
@@ -148,6 +160,22 @@ export default function DateDetailPage() {
                     {booking.note && (
                       <p className="text-slate-300 mt-3 text-sm bg-slate-700/50 p-3 rounded">
                         {booking.note}
+                    {user?.id === booking.user_id && (
+                      <>
+                        <button
+                          onClick={() => router.push(`/bookings/${booking.id}/edit`)}
+                          className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded transition-colors text-sm"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBooking(booking.id)}
+                          className="bg-red-900/50 hover:bg-red-800/50 text-red-300 px-3 py-1 rounded transition-colors text-sm"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                       </p>
                     )}
                   </div>

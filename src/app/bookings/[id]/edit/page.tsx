@@ -45,6 +45,7 @@ function EditBookingForm() {
         .from('bookings')
         .select('*')
         .eq('id', bookingId)
+        .eq('user_id', user.id)
         .single()
 
       if (error || !data) {
@@ -95,6 +96,7 @@ function EditBookingForm() {
         note,
       }, { count: 'exact' })
       .eq('id', booking.id)
+      .eq('user_id', user.id)
 
     if (error || count !== 1) {
       alert(
@@ -138,6 +140,7 @@ function EditBookingForm() {
       .from('bookings')
       .delete()
       .eq('id', booking.id)
+      .eq('user_id', user.id)
 
     if (error) {
       alert('Failed to delete booking: ' + error.message)
