@@ -95,17 +95,20 @@ function EditBookingForm() {
     const start = `${date}T${startTime}:00Z`
     const end = `${date}T${endTime}:00Z`
 
-    const { error } = await supabase
+    const { count, error } = await supabase
       .from('bookings')
       .update({
         start_time: start,
         end_time: end,
         note,
-      })
+      }, { count: 'exact' })
       .eq('id', booking.id)
 
-    if (error) {
-      alert('Failed to update booking: ' + error.message)
+    if (error || count !== 1) {
+      alert(
+        'Failed to update booking: ' +
+          (error?.message || 'No booking was updated. Check your Supabase UPDATE policy.')
+      )
       setLoading(false)
       return
     }
