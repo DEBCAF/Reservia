@@ -61,18 +61,10 @@ function EditBookingForm() {
       
       setDate(startDate.toISOString().split('T')[0])
       setStartTime(
-        startDate.toLocaleTimeString('en-US', { 
-          hour: '2-digit', 
-          minute: '2-digit',
-          hour12: false 
-        })
+        `${String(startDate.getUTCHours()).padStart(2, '0')}:${String(startDate.getUTCMinutes()).padStart(2, '0')}`
       )
       setEndTime(
-        endDate.toLocaleTimeString('en-US', { 
-          hour: '2-digit', 
-          minute: '2-digit',
-          hour12: false 
-        })
+        `${String(endDate.getUTCHours()).padStart(2, '0')}:${String(endDate.getUTCMinutes()).padStart(2, '0')}`
       )
       setNote(data.note || '')
       setFetching(false)
