@@ -3,8 +3,6 @@ import { useState } from 'react'
 import { createClient } from '@/src/lib/supabase'
 import { useRouter } from 'next/navigation'
 
-const ALLOWED_USERNAMES = ['golden_dawn_debcaf', 'user1', 'user2']
-
 export default function LoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -15,7 +13,14 @@ export default function LoginPage() {
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
     const trimmedUsername = username.trim().toLowerCase()
-    if (!ALLOWED_USERNAMES.includes(trimmedUsername)) {
+
+    const authorizationResponse = await fetch('/api/auth/authorize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: trimmedUsername }),
+    })
+
+    if (!authorizationResponse.ok) {
       alert('Access denied: Username not authorised! Use your Instagram username!! Only works for friends btw')
       return
     }
