@@ -160,22 +160,6 @@ export default function DateDetailPage() {
                     {booking.note && (
                       <p className="text-slate-300 mt-3 text-sm bg-slate-700/50 p-3 rounded">
                         {booking.note}
-                    {user?.id === booking.user_id && (
-                      <>
-                        <button
-                          onClick={() => router.push(`/bookings/${booking.id}/edit`)}
-                          className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded transition-colors text-sm"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteBooking(booking.id)}
-                          className="bg-red-900/50 hover:bg-red-800/50 text-red-300 px-3 py-1 rounded transition-colors text-sm"
-                        >
-                          Delete
-                        </button>
-                      </>
-                    )}
                       </p>
                     )}
                   </div>
