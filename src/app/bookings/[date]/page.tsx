@@ -179,20 +179,22 @@ export default function DateDetailPage() {
                       </p>
                     )}
                   </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => router.push(`/bookings/${booking.id}/edit`)}
-                      className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded transition-colors text-sm"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteBooking(booking.id)}
-                      className="bg-red-900/50 hover:bg-red-800/50 text-red-300 px-3 py-1 rounded transition-colors text-sm"
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  {user?.id === booking.user_id && (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => router.push(`/bookings/${booking.id}/edit`)}
+                        className="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded transition-colors text-sm"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteBooking(booking.id)}
+                        className="bg-red-900/50 hover:bg-red-800/50 text-red-300 px-3 py-1 rounded transition-colors text-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
