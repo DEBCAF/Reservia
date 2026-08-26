@@ -5,11 +5,11 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
   try {
-    const { action, userName, date, startTime, endTime, note } = await request.json()
+    const { action, userName, date, startTime, endTime, note, bookingId } = await request.json()
 
     // Configure email message details
-    const subject = `[Booking Alert] ${userName} - ${action.toUpperCase()}`
-    const htmlContent = `
+    let subject = `[Booking Alert] ${userName} - ${action.toUpperCase()}`
+    let htmlContent = `
       <h2>Booking Notification</h2>
       <p><strong>Action:</strong> ${action}</p>
       <p><strong>User:</strong> ${userName}</p>
@@ -17,6 +17,11 @@ export async function POST(request: Request) {
       <p><strong>Time:</strong> ${startTime} - ${endTime}</p>
       <p><strong>Note:</strong> ${note || 'None'}</p>
     `
+
+    // Add booking ID for update/delete actions
+    if (action === 'Booking Updated' || action === 'Booking Deleted') {
+      htmlContent += `<p><strong>Booking ID:</strong> ${bookingId}</p>`
+    }
 
     // Send email using Resend
     // Note: 'onboarding@resend.dev' is the default free sender domain provided by Resend

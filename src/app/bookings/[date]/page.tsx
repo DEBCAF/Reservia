@@ -49,6 +49,28 @@ export default function DateDetailPage() {
       alert('Failed to delete booking: ' + error.message)
       return
     }
+
+    // Send delete notification
+    const deletedBooking = bookings.find(b => b.id === bookingId)
+    if (deletedBooking) {
+      try {
+        await fetch('/api/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'Booking Deleted',
+            userName: deletedBooking.user_name,
+            date: date,
+            startTime: new Date(deletedBooking.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+            endTime: new Date(deletedBooking.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+            note: deletedBooking.note,
+            bookingId: bookingId,
+          }),
+        })
+      } catch (notifyError) {
+        console.error('Failed to send notification:', notifyError)
+      }
+    }
     
     // Refresh the bookings list
     fetchBookings(date)

@@ -113,6 +113,25 @@ function EditBookingForm() {
       return
     }
 
+    // Send update notification
+    try {
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'Booking Updated',
+          userName: booking.user_name,
+          date: date,
+          startTime: startTime,
+          endTime: endTime,
+          note: note,
+          bookingId: booking.id,
+        }),
+      })
+    } catch (notifyError) {
+      console.error('Failed to send notification:', notifyError)
+    }
+
     setLoading(false)
     router.push(`/bookings/${date}`)
   }
@@ -132,6 +151,25 @@ function EditBookingForm() {
       alert('Failed to delete booking: ' + error.message)
       setLoading(false)
       return
+    }
+
+    // Send delete notification
+    try {
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'Booking Deleted',
+          userName: booking.user_name,
+          date: date,
+          startTime: startTime,
+          endTime: endTime,
+          note: note,
+          bookingId: booking.id,
+        }),
+      })
+    } catch (notifyError) {
+      console.error('Failed to send notification:', notifyError)
     }
 
     router.push(`/bookings/${date}`)
