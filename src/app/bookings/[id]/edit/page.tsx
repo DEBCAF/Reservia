@@ -86,12 +86,16 @@ function EditBookingForm() {
     if (!startTime || !endTime) return alert('Please select start and end times')
     if (!booking) return
 
+    if (endTime <= startTime) {
+      return alert('End time must be later than start time')
+    }
+
     setLoading(true)
 
     const start = `${date}T${startTime}:00Z`
     const end = `${date}T${endTime}:00Z`
 
-    const { error } = await supabase
+    const { data: updatedBooking, error } = await supabase
       .from('bookings')
       .update({
         start_time: start,
@@ -99,9 +103,14 @@ function EditBookingForm() {
         note,
       })
       .eq('id', booking.id)
+      .select('id, start_time, end_time, note')
+      .single()
 
-    if (error) {
-      alert('Failed to update booking: ' + error.message)
+    if (error || !updatedBooking) {
+      alert(
+        'Failed to update booking: ' +
+          (error?.message || 'No booking was updated. Check your Supabase UPDATE policy.')
+      )
       setLoading(false)
       return
     }
