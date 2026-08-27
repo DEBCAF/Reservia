@@ -176,42 +176,42 @@ function EditBookingForm() {
   }
 
   if (fetching || !user) {
-    return <div className="min-h-screen bg-[#faf8f5] text-[#2c1810] p-8">Loading...</div>
+    return <div className="min-h-screen bg-[#2c1810] text-[#faf8f5] p-8">Loading...</div>
   }
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#2c1810]">
+    <main className="min-h-screen bg-[#2c1810] text-[#faf8f5]">
       <div className="p-6 max-w-2xl mx-auto">
         <button
           onClick={() => router.back()}
-          className="text-[#8b7355] hover:text-[#2c1810] transition-colors mb-4 cursor-pointer"
+          className="text-[#a89080] hover:text-[#faf8f5] transition-colors mb-4 cursor-pointer font-bold"
         >
           ← Back
         </button>
         <h1 className="text-3xl font-bold mb-1">Edit Booking</h1>
-        <p className="text-[#8b7355] text-sm mb-6">
+        <p className="text-[#a89080] text-sm mb-6">
           {date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select a date from the calendar'}
         </p>
         {/* Booking Form */}
-        <form onSubmit={handleUpdateBooking} className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6 shadow-lg space-y-6">
+        <form onSubmit={handleUpdateBooking} className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 shadow-lg space-y-6">
           {/* User Info */}
-          <div className="bg-[#ede4d8] p-4 rounded-lg">
-            <label className="block text-sm mb-2 text-[#5c3d30]">Booked as</label>
+          <div className="bg-[#4a3228] p-4 rounded-lg">
+            <label className="block text-sm font-bold text-[#a89080]">Booked as</label>
             <input
               type="text"
               disabled
-              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#ede4d8] text-[#2c1810]"
+              className="w-full border border-[#4a3228] p-2 rounded bg-[#4a3228] text-[#faf8f5]"
               value={user.user_metadata?.full_name || user.email}
             />
           </div>
 
           {/* Date */}
           <div>
-            <label className="block text-sm mb-2 text-[#5c3d30]">Date</label>
+            <label className="block text-sm font-bold text-[#a89080]">Date</label>
             <input
               type="date"
               required
-              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
+              className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
@@ -220,21 +220,21 @@ function EditBookingForm() {
           {/* Time Selection */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-2 text-[#5c3d30]">Start Time</label>
+              <label className="block text-sm font-bold text-[#a89080]">Start Time</label>
               <input
                 type="time"
                 required
-                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
+                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-sm mb-2 text-[#5c3d30]">End Time</label>
+              <label className="block text-sm font-bold text-[#a89080]">End Time</label>
               <input
                 type="time"
                 required
-                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
+                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
               />
@@ -243,12 +243,12 @@ function EditBookingForm() {
 
           {/* Note */}
           <div>
-            <label className="block text-sm mb-2 text-[#5c3d30]">
-              Note <span className="text-[#8b7355]">(optional, private to admin)</span>
+            <label className="block text-sm font-bold text-[#a89080]">
+              Note <span className="text-[#a89080]">(optional, private to admin)</span>
             </label>
             <input
               type="text"
-              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
+              className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Add a private note..."

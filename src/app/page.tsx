@@ -80,32 +80,32 @@ export default function Home() {
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-  if (!user) return <div className="p-8 text-[#2c1810]">Loading...</div>
+  if (!user) return <div className="p-8 text-[#faf8f5]">Loading...</div>
 
   const calendarDays: (number | null)[] = []
   for (let i = 0; i < firstDayOfWeek; i++) calendarDays.push(null)
   for (let d = 1; d <= daysInMonth; d++) calendarDays.push(d)
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#2c1810]">
+    <main className="min-h-screen bg-[#2c1810] text-[#faf8f5]">
       <div className="p-6 max-w-5xl mx-auto">
         {/* Calendar */}
-        <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] shadow-lg overflow-hidden">
+        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] shadow-lg overflow-hidden">
           {/* Month Navigation */}
-          <div className="flex justify-between items-center p-4 border-b border-[#d4c5b5]">
-            <button onClick={prevMonth} className="text-[#8b7355] hover:text-[#2c1810] transition-colors px-3 py-1 rounded hover:bg-[#ede4d8] cursor-pointer">
+          <div className="flex justify-between items-center p-4 border-b border-[#4a3228]">
+            <button onClick={prevMonth} className="text-[#a89080] hover:text-[#faf8f5] transition-colors px-3 py-1 rounded hover:bg-[#4a3228] cursor-pointer font-bold">
               ← Prev
             </button>
-            <h2 className="text-xl font-semibold">{monthName}</h2>
-            <button onClick={nextMonth} className="text-[#8b7355] hover:text-[#2c1810] transition-colors px-3 py-1 rounded hover:bg-[#ede4d8] cursor-pointer">
+            <h2 className="text-xl font-bold">{monthName}</h2>
+            <button onClick={nextMonth} className="text-[#a89080] hover:text-[#faf8f5] transition-colors px-3 py-1 rounded hover:bg-[#4a3228] cursor-pointer font-bold">
               Next →
             </button>
           </div>
 
           {/* Day Names */}
-          <div className="grid grid-cols-7 border-b border-[#d4c5b5]">
+          <div className="grid grid-cols-7 border-b border-[#4a3228]">
             {dayNames.map((day) => (
-              <div key={day} className="text-center py-3 text-sm font-medium text-[#8b7355] border-r border-[#d4c5b5] last:border-r-0">
+              <div key={day} className="text-center py-3 text-sm font-bold text-[#a89080] border-r border-[#4a3228] last:border-r-0">
                 {day}
               </div>
             ))}
@@ -115,7 +115,7 @@ export default function Home() {
           <div className="grid grid-cols-7">
             {calendarDays.map((day, idx) => {
               if (day === null) {
-                return <div key={`empty-${idx}`} className="min-h-[100px] border-r border-b border-[#d4c5b5] bg-[#f5efe8]/50" />
+                return <div key={`empty-${idx}`} className="min-h-[100px] border-r border-b border-[#4a3228] bg-[#1a0f09]/50" />
               }
 
               const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
@@ -127,24 +127,24 @@ export default function Home() {
                   key={day}
                   onClick={() => goToDate(day)}
                   className={`
-                    min-h-[100px] p-2 border-r border-b border-[#d4c5b5] text-left transition-all
+                    min-h-[100px] p-2 border-r border-b border-[#4a3228] text-left transition-all font-bold
                     ${has
-                      ? 'bg-[#ede4d8] hover:bg-[#e0d5c3] cursor-pointer'
-                      : 'bg-[#f5efe8] hover:bg-[#ede4d8] cursor-pointer'}
+                      ? 'bg-[#4a3228] hover:bg-[#5c3d30] cursor-pointer'
+                      : 'bg-[#1a0f09] hover:bg-[#4a3228] cursor-pointer'}
                   `}
                 >
-                  <span className={`text-lg font-semibold ${has ? 'text-[#8b5e3c]' : 'text-[#5c3d30]'}`}>
+                  <span className={`text-lg font-bold ${has ? 'text-[#8b5e3c]' : 'text-[#a89080]'}`}>
                     {day}
                   </span>
                   {has && (
                     <div className="mt-1 space-y-1">
                       {bookingsByDate[dateStr]?.slice(0, 2).slice(0, 2).map((b) => (
-                        <div key={b.id} className="text-xs text-[#8b7355] truncate">
+                        <div key={b.id} className="text-xs text-[#a89080] truncate">
                           {b.user_name} · {new Date(b.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}
                         </div>
                       ))}
                       {count > 2 && (
-                        <div className="text-xs text-[#8b5e3c] font-medium">+{count - 2} more</div>
+                        <div className="text-xs text-[#8b5e3c] font-bold">+{count - 2} more</div>
                       )}
                     </div>
                   )}

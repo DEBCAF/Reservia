@@ -102,22 +102,22 @@ export default function DateDetailPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#2c1810]">
+    <main className="min-h-screen bg-[#2c1810] text-[#faf8f5]">
       <div className="p-6 max-w-4xl mx-auto">
         <button
           onClick={() => router.push('/')}
-          className="text-[#8b7355] hover:text-[#2c1810] transition-colors mb-4 cursor-pointer"
+          className="text-[#a89080] hover:text-[#faf8f5] transition-colors mb-4 cursor-pointer font-bold"
         >
           ← Back to Calendar
         </button>
         <h1 className="text-3xl font-bold">{formatDate(date)}</h1>
-        <p className="text-[#8b7355] text-sm mb-6">
+        <p className="text-[#a89080] text-sm mb-6">
           {bookings.length} {bookings.length === 1 ? 'booking' : 'bookings'} for this date
         </p>
         <div className="flex justify-end mb-6">
           <button
             onClick={() => router.push(`/bookings/new?date=${date}`)}
-            className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-3 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+            className="bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-6 py-3 rounded-lg transition-colors flex items-center gap-2 cursor-pointer font-bold"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -128,11 +128,11 @@ export default function DateDetailPage() {
 
         {/* Bookings List */}
         {bookings.length === 0 ? (
-          <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-12 text-center">
-            <p className="text-[#8b7355] text-lg">No bookings for this date</p>
+          <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-12 text-center">
+            <p className="text-[#a89080] text-lg font-bold">No bookings for this date</p>
             <button
               onClick={() => router.push(`/bookings/new?date=${date}`)}
-              className="mt-4 bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-2 rounded-lg transition-colors cursor-pointer"
+              className="mt-4 bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-6 py-2 rounded-lg transition-colors cursor-pointer font-bold"
             >
               Create First Booking
             </button>
@@ -142,14 +142,14 @@ export default function DateDetailPage() {
             {bookings.map((booking) => (
               <div
                 key={booking.id}
-                className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6 shadow-sm"
+                className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 shadow-sm"
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-xl font-semibold text-[#2c1810] mb-2">
+                    <h3 className="text-xl font-bold text-[#faf8f5] mb-2">
                       {booking.user_name}
                     </h3>
-                    <div className="flex items-center gap-4 text-[#8b7355] text-sm">
+                    <div className="flex items-center gap-4 text-[#a89080] text-sm">
                       <span className="flex items-center gap-1">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -158,7 +158,7 @@ export default function DateDetailPage() {
                       </span>
                     </div>
                     {booking.note && (
-                      <p className="text-[#5c3d30] mt-3 text-sm bg-[#ede4d8] p-3 rounded">
+                      <p className="text-[#a89080] mt-3 text-sm bg-[#4a3228] p-3 rounded font-bold">
                         {booking.note}
                       </p>
                     )}
@@ -167,13 +167,13 @@ export default function DateDetailPage() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => router.push(`/bookings/${booking.id}/edit`)}
-                        className="bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-3 py-1 rounded transition-colors text-sm cursor-pointer"
+                        className="bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-3 py-1 rounded transition-colors text-sm cursor-pointer font-bold"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDeleteBooking(booking.id)}
-                        className="bg-[#8b5e3c] hover:bg-[#6b4530] text-[#faf8f5] px-3 py-1 rounded transition-colors text-sm cursor-pointer"
+                        className="bg-[#8b5e3c] hover:bg-[#6b4530] text-[#faf8f5] px-3 py-1 rounded transition-colors text-sm cursor-pointer font-bold"
                       >
                         Delete
                       </button>

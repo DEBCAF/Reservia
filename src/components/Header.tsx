@@ -30,7 +30,7 @@ export default function Header() {
     .slice(0, 2)
 
   return (
-    <header className="bg-[#2c1810] border-b border-[#4a3228] shadow-sm">
+    <header className="bg-[#1a0f09] border-b border-[#2c1810] shadow-sm">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Left: Branding / Banner Text */}
         <Link href="/" className="flex items-center gap-3">
@@ -49,7 +49,7 @@ export default function Header() {
         {user ? (
           <Link
             href="/profile"
-            className="flex items-center gap-2 bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-3 py-2 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-3 py-2 rounded-lg transition-colors cursor-pointer font-bold"
           >
             <div className="w-7 h-7 rounded-full bg-[#8b5e3c] flex items-center justify-center text-xs font-bold">
               {initials}
@@ -59,7 +59,7 @@ export default function Header() {
         ) : (
           <Link
             href="/login"
-            className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-4 py-2 rounded-lg transition-colors text-sm font-medium cursor-pointer"
+            className="bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-4 py-2 rounded-lg transition-colors text-sm font-bold cursor-pointer"
           >
             Log In
           </Link>

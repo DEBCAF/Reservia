@@ -81,18 +81,18 @@ export default function ProfilePage() {
     }
   }
 
-  if (loading) return <div className="min-h-screen bg-[#faf8f5] text-[#2c1810] p-8">Loading...</div>
+  if (loading) return <div className="min-h-screen bg-[#2c1810] text-[#faf8f5] p-8">Loading...</div>
 
   const displayName = user?.user_metadata?.full_name || user?.email || 'Unknown'
 
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#2c1810]">
+    <main className="min-h-screen bg-[#2c1810] text-[#faf8f5]">
       <div className="p-6 max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="text-[#8b7355] hover:text-[#2c1810] transition-colors mb-2 cursor-pointer"
+            className="text-[#a89080] hover:text-[#faf8f5] transition-colors mb-2 cursor-pointer font-bold"
           >
             ← Back
           </button>
@@ -100,7 +100,7 @@ export default function ProfilePage() {
         </div>
 
         {/* User Info */}
-        <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6 mb-6">
+        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 mb-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 rounded-full bg-[#8b5e3c] flex items-center justify-center text-lg font-bold text-[#faf8f5]">
               {displayName
@@ -111,16 +111,16 @@ export default function ProfilePage() {
                 .slice(0, 2)}
             </div>
             <div>
-              <h2 className="text-xl font-semibold">{displayName}</h2>
-              <p className="text-[#8b7355] text-sm">{user.email}</p>
+              <h2 className="text-xl font-bold">{displayName}</h2>
+              <p className="text-[#a89080] text-sm">{user.email}</p>
             </div>
           </div>
-          <div className="bg-[#ede4d8] rounded-lg p-4 space-y-2">
-            <p className="text-[#5c3d30] text-sm">
-              <span className="font-medium">Account ID:</span> {user.id}
+          <div className="bg-[#4a3228] rounded-lg p-4 space-y-2">
+            <p className="text-[#a89080] text-sm">
+              <span className="font-bold">Account ID:</span> {user.id}
             </p>
-            <p className="text-[#5c3d30] text-sm">
-              <span className="font-medium">Joined:</span>{' '}
+            <p className="text-[#a89080] text-sm">
+              <span className="font-bold">Joined:</span>{' '}
               {new Date(user.created_at).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
@@ -133,10 +133,10 @@ export default function ProfilePage() {
         {/* Message */}
         {message && (
           <div
-            className={`mb-6 p-4 rounded-lg text-sm ${
+            className={`mb-6 p-4 rounded-lg text-sm font-bold ${
               messageType === 'success'
-                ? 'bg-[#d4edda] text-[#155724] border border-[#c3e6cb]'
-                : 'bg-[#f8d7da] text-[#721c24] border border-[#f5c6cb]'
+                ? 'bg-[#1a3a2a] text-[#7dcea0] border border-[#2d5a3d]'
+                : 'bg-[#3a1a1a] text-[#f5a0a0] border border-[#5a2d2d]'
             }`}
           >
             {message}
@@ -144,11 +144,11 @@ export default function ProfilePage() {
         )}
 
         {/* Change Password */}
-        <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6 mb-6">
-          <h3 className="text-lg font-semibold mb-4">Change Password</h3>
+        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 mb-6">
+          <h3 className="text-lg font-bold mb-4">Change Password</h3>
           <form onSubmit={handleChangePassword} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-[#5c3d30]">
+              <label className="block text-sm font-bold mb-1 text-[#a89080]">
                 New Password
               </label>
               <input
@@ -156,7 +156,7 @@ export default function ProfilePage() {
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] placeholder-[#8b7355]"
+                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5] placeholder-[#a89080]"
                 placeholder="Enter new password"
               />
             </div>
