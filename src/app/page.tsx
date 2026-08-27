@@ -93,6 +93,15 @@ export default function Home() {
     return bookingsByDate[dateStr] ? bookingsByDate[dateStr].length : 0
   }
 
+  const isPastDate = (day: number) => {
+    // Only relevant for current month
+    if (!isCurrentMonth) return false
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    const today = new Date()
+    const todayStr = today.toISOString().split('T')[0]
+    return dateStr < todayStr
+  }
+
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   if (!user) return <div className="p-8 text-[#faf8f5]">Loading...</div>
@@ -152,19 +161,22 @@ export default function Home() {
               const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
               const count = getBookingCount(day)
               const has = hasBookings(day)
+              const past = isPastDate(day)
 
               return (
                 <button
                   key={day}
-                  onClick={() => goToDate(day)}
+                  onClick={past ? undefined : () => goToDate(day)}
                   className={`
                     min-h-[100px] p-2 border-r border-b border-[#4a3228] text-left transition-all font-bold
-                    ${has
-                      ? 'bg-[#4a3228] hover:bg-[#5c3d30] cursor-pointer'
-                      : 'bg-[#1a0f09] hover:bg-[#4a3228] cursor-pointer'}
+                    ${past
+                      ? 'bg-[#2c1810] text-[#4a3228] cursor-not-allowed opacity-50'
+                      : has
+                        ? 'bg-[#4a3228] hover:bg-[#5c3d30] cursor-pointer'
+                        : 'bg-[#1a0f09] hover:bg-[#4a3228] cursor-pointer'}
                   `}
                 >
-                  <span className={`text-lg font-bold ${has ? 'text-[#8b5e3c]' : 'text-[#a89080]'}`}>
+                  <span className={`text-lg font-bold ${past ? 'text-[#4a3228]' : has ? 'text-[#8b5e3c]' : 'text-[#a89080]'}`}>
                     {day}
                   </span>
                   {has && (
