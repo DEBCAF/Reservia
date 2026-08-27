@@ -118,7 +118,7 @@ function EditBookingForm() {
 
     // Send update notification
     try {
-      await fetch('/api/notify', {
+      const notifyResponse = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -131,6 +131,9 @@ function EditBookingForm() {
           bookingId: booking.id,
         }),
       })
+      if (!notifyResponse.ok) {
+        console.error('Notification failed:', await notifyResponse.text())
+      }
     } catch (notifyError) {
       console.error('Failed to send notification:', notifyError)
     }
@@ -162,7 +165,7 @@ function EditBookingForm() {
 
     // Send delete notification
     try {
-      await fetch('/api/notify', {
+      const notifyResponse = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -175,6 +178,9 @@ function EditBookingForm() {
           bookingId: booking.id,
         }),
       })
+      if (!notifyResponse.ok) {
+        console.error('Notification failed:', await notifyResponse.text())
+      }
     } catch (notifyError) {
       console.error('Failed to send notification:', notifyError)
     }

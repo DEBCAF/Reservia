@@ -5,6 +5,13 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
   try {
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json(
+        { success: false, error: 'RESEND_API_KEY is not configured' },
+        { status: 500 }
+      )
+    }
+
     const { action, userName, date, startTime, endTime, note, bookingId } = await request.json()
 
     // Configure email message details
@@ -34,6 +41,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, data })
   } catch (error) {
-    return NextResponse.json({ success: false, error }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Unable to send notification'
+    return NextResponse.json({ success: false, error: message }, { status: 500 })
   }
 }

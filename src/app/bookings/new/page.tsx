@@ -66,7 +66,7 @@ function NewBookingForm() {
 
     // Call backend notify API
     try {
-      await fetch('/api/notify', {
+      const notifyResponse = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -78,6 +78,9 @@ function NewBookingForm() {
           note: note,
         }),
       })
+      if (!notifyResponse.ok) {
+        console.error('Notification failed:', await notifyResponse.text())
+      }
     } catch (notifyError) {
       console.error('Failed to send notification:', notifyError)
     }

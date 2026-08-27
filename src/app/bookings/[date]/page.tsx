@@ -69,7 +69,7 @@ export default function DateDetailPage() {
     const deletedBooking = bookings.find(b => b.id === bookingId)
     if (deletedBooking) {
       try {
-        await fetch('/api/notify', {
+        const notifyResponse = await fetch('/api/notify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -82,6 +82,9 @@ export default function DateDetailPage() {
             bookingId: bookingId,
           }),
         })
+        if (!notifyResponse.ok) {
+          console.error('Notification failed:', await notifyResponse.text())
+        }
       } catch (notifyError) {
         console.error('Failed to send notification:', notifyError)
       }
