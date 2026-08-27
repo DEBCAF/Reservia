@@ -13,6 +13,12 @@ export default function Header() {
       setUser(user)
     }
     loadUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   const userName = user?.user_metadata?.full_name || user?.email || 'User'
