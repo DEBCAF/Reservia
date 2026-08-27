@@ -161,7 +161,7 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-[#5c3d30]">
+              <label className="block text-sm font-medium mb-1 text-[#a89080]">
                 Confirm Password
               </label>
               <input
@@ -169,7 +169,7 @@ export default function ProfilePage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] placeholder-[#8b7355]"
+                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5] placeholder-[#a89080]"
                 placeholder="Confirm new password"
               />
             </div>
@@ -183,26 +183,26 @@ export default function ProfilePage() {
         </div>
 
         {/* Danger Zone */}
-        <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6">
-          <h3 className="text-lg font-semibold text-[#721c24] mb-4">Danger Zone</h3>
+        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 mb-6">
+          <h3 className="text-lg font-bold mb-4">Danger Zone</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#5c3d30]">Log Out</p>
-                <p className="text-[#8b7355] text-sm">Sign out of your account on this device</p>
+                <p className="text-[#a89080]">Log Out</p>
+                <p className="text-[#a89080] text-sm">Sign out of your account on this device</p>
               </div>
               <button
                 onClick={handleSignOut}
-                className="bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-4 py-2 rounded transition-colors text-sm cursor-pointer"
+                className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
               >
                 Log Out
               </button>
             </div>
-            <hr className="border-[#d4c5b5]" />
+            <hr className="border-[#4a3228]" />
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-[#721c24] font-medium">Delete Account</p>
-                <p className="text-[#8b7355] text-sm">
+                <p className="text-[#a89080] font-medium">Delete Account</p>
+                <p className="text-[#a89080] text-sm">
                   Permanently delete your account and all your bookings. This action cannot be undone.
                 </p>
               </div>
@@ -211,12 +211,12 @@ export default function ProfilePage() {
                   type="text"
                   value={deleteConfirm}
                   onChange={(e) => setDeleteConfirm(e.target.value)}
-                  className="border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] text-sm w-28"
+                  className="border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5] text-sm w-28"
                   placeholder="Type DELETE"
                 />
                 <button
                   onClick={handleDeleteAccount}
-                  className="bg-[#8b5e3c] hover:bg-[#6b4530] text-[#faf8f5] px-4 py-2 rounded transition-colors text-sm cursor-pointer"
+                  className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
                 >
                   Delete Account
                 </button>
