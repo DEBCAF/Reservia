@@ -21,7 +21,7 @@ export default function LoginPage() {
     })
 
     if (!authorizationResponse.ok) {
-      alert('Access denied: Username not authorised! Use your Instagram username!! Only works for friends btw')
+      alert('Access denied: Username not authorised! Use your Instagram username!!')
       return
     }
     const email = `${trimmedUsername}@booking.internal`

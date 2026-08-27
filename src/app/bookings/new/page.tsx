@@ -14,6 +14,13 @@ function NewBookingForm() {
   const searchParams = useSearchParams()
   const supabase = createClient()
 
+  // Calculate min (today) and max (2 years from now) dates for the date input
+  const today = new Date()
+  const todayStr = today.toISOString().split('T')[0]
+  const maxDate = new Date(today)
+  maxDate.setFullYear(maxDate.getFullYear() + 2)
+  const maxDateStr = maxDate.toISOString().split('T')[0]
+
   useEffect(() => {
     async function loadData() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -113,6 +120,8 @@ function NewBookingForm() {
             <input
               type="date"
               required
+              min={todayStr}
+              max={maxDateStr}
               className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
               value={date}
               onChange={(e) => setDate(e.target.value)}
