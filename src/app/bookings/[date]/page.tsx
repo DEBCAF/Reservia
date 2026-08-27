@@ -158,7 +158,7 @@ export default function DateDetailPage() {
                       </span>
                     </div>
                     {booking.note && (
-                      <p className="text-[#a89080] mt-3 text-sm bg-[#4a3228] p-3 rounded font-bold">
+                      <p className="text-[#a89080] mt-3 text-sm bg-[#4a3228] p-3 rounded font-bold break-words max-w-xs">
                         {booking.note}
                       </p>
                     )}

@@ -150,6 +150,7 @@ function NewBookingForm() {
             </label>
             <input
               type="text"
+              maxLength={200}
               className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
               value={note}
               onChange={(e) => setNote(e.target.value)}
