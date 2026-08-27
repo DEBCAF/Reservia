@@ -45,6 +45,21 @@ export default function Home() {
   const year = currentMonth.getFullYear()
   const month = currentMonth.getMonth()
 
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonthNum = now.getMonth()
+
+  // 2 years from now
+  const maxDate = new Date(currentYear, currentMonthNum + 24, 1)
+  const maxYear = maxDate.getFullYear()
+  const maxMonth = maxDate.getMonth()
+
+  const isCurrentMonth = year === currentYear && month === currentMonthNum
+  const isMaxMonth = year === maxYear && month === maxMonth
+
+  const canGoPrev = !isCurrentMonth
+  const canGoNext = !(year > maxYear || (year === maxYear && month >= maxMonth))
+
   const daysInMonth = new Date(year, month + 1, 0).getDate()
   const firstDayOfWeek = new Date(year, month, 1).getDay()
 
@@ -93,11 +108,27 @@ export default function Home() {
         <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] shadow-lg overflow-hidden">
           {/* Month Navigation */}
           <div className="flex justify-between items-center p-4 border-b border-[#4a3228]">
-            <button onClick={prevMonth} className="text-[#a89080] hover:text-[#faf8f5] transition-colors px-3 py-1 rounded hover:bg-[#4a3228] cursor-pointer font-bold">
+            <button
+              onClick={prevMonth}
+              disabled={!canGoPrev}
+              className={`px-3 py-1 rounded font-bold transition-colors ${
+                !canGoPrev
+                  ? 'text-[#4a3228] cursor-not-allowed'
+                  : 'text-[#a89080] hover:text-[#faf8f5] hover:bg-[#4a3228] cursor-pointer'
+              }`}
+            >
               ← Prev
             </button>
             <h2 className="text-xl font-bold">{monthName}</h2>
-            <button onClick={nextMonth} className="text-[#a89080] hover:text-[#faf8f5] transition-colors px-3 py-1 rounded hover:bg-[#4a3228] cursor-pointer font-bold">
+            <button
+              onClick={nextMonth}
+              disabled={!canGoNext}
+              className={`px-3 py-1 rounded font-bold transition-colors ${
+                !canGoNext
+                  ? 'text-[#4a3228] cursor-not-allowed'
+                  : 'text-[#a89080] hover:text-[#faf8f5] hover:bg-[#4a3228] cursor-pointer'
+              }`}
+            >
               Next →
             </button>
           </div>
