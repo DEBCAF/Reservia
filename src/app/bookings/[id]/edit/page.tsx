@@ -176,42 +176,42 @@ function EditBookingForm() {
   }
 
   if (fetching || !user) {
-    return <div className="min-h-screen bg-slate-900 text-white p-8">Loading...</div>
+    return <div className="min-h-screen bg-[#faf8f5] text-[#2c1810] p-8">Loading...</div>
   }
 
   return (
-    <main className="min-h-screen bg-slate-900 text-white">
+    <main className="min-h-screen bg-[#faf8f5] text-[#2c1810]">
       <div className="p-6 max-w-2xl mx-auto">
         <button
           onClick={() => router.back()}
-          className="text-slate-400 hover:text-white transition-colors mb-4"
+          className="text-[#8b7355] hover:text-[#2c1810] transition-colors mb-4 cursor-pointer"
         >
           ← Back
         </button>
         <h1 className="text-3xl font-bold mb-1">Edit Booking</h1>
-        <p className="text-slate-400 text-sm mb-6">
+        <p className="text-[#8b7355] text-sm mb-6">
           {date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select a date from the calendar'}
         </p>
         {/* Booking Form */}
-        <form onSubmit={handleUpdateBooking} className="bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-lg space-y-6">
+        <form onSubmit={handleUpdateBooking} className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6 shadow-lg space-y-6">
           {/* User Info */}
-          <div className="bg-slate-700/50 p-4 rounded-lg">
-            <label className="block text-sm mb-2 text-slate-300">Booked as</label>
+          <div className="bg-[#ede4d8] p-4 rounded-lg">
+            <label className="block text-sm mb-2 text-[#5c3d30]">Booked as</label>
             <input
               type="text"
               disabled
-              className="w-full border border-slate-600 p-2 rounded bg-slate-600 text-white"
+              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#ede4d8] text-[#2c1810]"
               value={user.user_metadata?.full_name || user.email}
             />
           </div>
 
           {/* Date */}
           <div>
-            <label className="block text-sm mb-2 text-slate-300">Date</label>
+            <label className="block text-sm mb-2 text-[#5c3d30]">Date</label>
             <input
               type="date"
               required
-              className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white"
+              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
@@ -220,21 +220,21 @@ function EditBookingForm() {
           {/* Time Selection */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-2 text-slate-300">Start Time</label>
+              <label className="block text-sm mb-2 text-[#5c3d30]">Start Time</label>
               <input
                 type="time"
                 required
-                className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white"
+                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-sm mb-2 text-slate-300">End Time</label>
+              <label className="block text-sm mb-2 text-[#5c3d30]">End Time</label>
               <input
                 type="time"
                 required
-                className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white"
+                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
               />
@@ -243,12 +243,12 @@ function EditBookingForm() {
 
           {/* Note */}
           <div>
-            <label className="block text-sm mb-2 text-slate-300">
-              Note <span className="text-slate-500">(optional, private to admin)</span>
+            <label className="block text-sm mb-2 text-[#5c3d30]">
+              Note <span className="text-[#8b7355]">(optional, private to admin)</span>
             </label>
             <input
               type="text"
-              className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white"
+              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810]"
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Add a private note..."
@@ -261,8 +261,8 @@ function EditBookingForm() {
             disabled={loading}
             className={`w-full py-3 rounded-lg font-semibold transition-colors ${
               loading
-                ? 'bg-slate-600 text-slate-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-500 text-white'
+                ? 'bg-[#d4c5b5] text-[#8b7355] cursor-not-allowed'
+                : 'bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] cursor-pointer'
             }`}
           >
             {loading ? 'Updating...' : 'Update Booking'}
@@ -272,7 +272,7 @@ function EditBookingForm() {
           <button
             type="button"
             onClick={handleDeleteBooking}
-            className="w-full py-3 rounded-lg font-semibold bg-red-900/50 hover:bg-red-800/50 text-red-300 transition-colors"
+            className="w-full py-3 rounded-lg font-semibold bg-[#8b5e3c] hover:bg-[#6b4530] text-[#faf8f5] transition-colors cursor-pointer"
           >
             Delete Booking
           </button>
@@ -284,7 +284,7 @@ function EditBookingForm() {
 
 export default function EditBookingPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-900 text-white p-8">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#faf8f5] text-[#2c1810] p-8">Loading...</div>}>
       <EditBookingForm />
     </Suspense>
   )

@@ -81,18 +81,18 @@ export default function ProfilePage() {
     }
   }
 
-  if (loading) return <div className="min-h-screen bg-slate-900 text-white p-8">Loading...</div>
+  if (loading) return <div className="min-h-screen bg-[#faf8f5] text-[#2c1810] p-8">Loading...</div>
 
   const displayName = user?.user_metadata?.full_name || user?.email || 'Unknown'
 
   return (
-    <main className="min-h-screen bg-slate-900 text-white">
+    <main className="min-h-screen bg-[#faf8f5] text-[#2c1810]">
       <div className="p-6 max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="text-slate-400 hover:text-white transition-colors mb-2"
+            className="text-[#8b7355] hover:text-[#2c1810] transition-colors mb-2 cursor-pointer"
           >
             ← Back
           </button>
@@ -100,9 +100,9 @@ export default function ProfilePage() {
         </div>
 
         {/* User Info */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-6 mb-6">
+        <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6 mb-6">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-lg font-bold">
+            <div className="w-12 h-12 rounded-full bg-[#8b5e3c] flex items-center justify-center text-lg font-bold text-[#faf8f5]">
               {displayName
                 .split(' ')
                 .map((n: string) => n[0])
@@ -112,14 +112,14 @@ export default function ProfilePage() {
             </div>
             <div>
               <h2 className="text-xl font-semibold">{displayName}</h2>
-              <p className="text-slate-400 text-sm">{user.email}</p>
+              <p className="text-[#8b7355] text-sm">{user.email}</p>
             </div>
           </div>
-          <div className="bg-slate-700/50 rounded-lg p-4 space-y-2">
-            <p className="text-slate-300 text-sm">
+          <div className="bg-[#ede4d8] rounded-lg p-4 space-y-2">
+            <p className="text-[#5c3d30] text-sm">
               <span className="font-medium">Account ID:</span> {user.id}
             </p>
-            <p className="text-slate-300 text-sm">
+            <p className="text-[#5c3d30] text-sm">
               <span className="font-medium">Joined:</span>{' '}
               {new Date(user.created_at).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -135,8 +135,8 @@ export default function ProfilePage() {
           <div
             className={`mb-6 p-4 rounded-lg text-sm ${
               messageType === 'success'
-                ? 'bg-green-900/50 text-green-300 border border-green-700'
-                : 'bg-red-900/50 text-red-300 border border-red-700'
+                ? 'bg-[#d4edda] text-[#155724] border border-[#c3e6cb]'
+                : 'bg-[#f8d7da] text-[#721c24] border border-[#f5c6cb]'
             }`}
           >
             {message}
@@ -144,11 +144,11 @@ export default function ProfilePage() {
         )}
 
         {/* Change Password */}
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-6 mb-6">
+        <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6 mb-6">
           <h3 className="text-lg font-semibold mb-4">Change Password</h3>
           <form onSubmit={handleChangePassword} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1 text-slate-300">
+              <label className="block text-sm font-medium mb-1 text-[#5c3d30]">
                 New Password
               </label>
               <input
@@ -156,12 +156,12 @@ export default function ProfilePage() {
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white placeholder-slate-400"
+                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] placeholder-[#8b7355]"
                 placeholder="Enter new password"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-slate-300">
+              <label className="block text-sm font-medium mb-1 text-[#5c3d30]">
                 Confirm Password
               </label>
               <input
@@ -169,13 +169,13 @@ export default function ProfilePage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white placeholder-slate-400"
+                className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] placeholder-[#8b7355]"
                 placeholder="Confirm new password"
               />
             </div>
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded font-medium transition-colors"
+              className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
             >
               Update Password
             </button>
@@ -183,26 +183,26 @@ export default function ProfilePage() {
         </div>
 
         {/* Danger Zone */}
-        <div className="bg-slate-800 rounded-xl border border-red-900/50 p-6">
-          <h3 className="text-lg font-semibold text-red-400 mb-4">Danger Zone</h3>
+        <div className="bg-[#f5efe8] rounded-xl border border-[#d4c5b5] p-6">
+          <h3 className="text-lg font-semibold text-[#721c24] mb-4">Danger Zone</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-300">Log Out</p>
-                <p className="text-slate-400 text-sm">Sign out of your account on this device</p>
+                <p className="text-[#5c3d30]">Log Out</p>
+                <p className="text-[#8b7355] text-sm">Sign out of your account on this device</p>
               </div>
               <button
                 onClick={handleSignOut}
-                className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded transition-colors text-sm"
+                className="bg-[#4a3228] hover:bg-[#5c3d30] text-[#faf8f5] px-4 py-2 rounded transition-colors text-sm cursor-pointer"
               >
                 Log Out
               </button>
             </div>
-            <hr className="border-slate-700" />
+            <hr className="border-[#d4c5b5]" />
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-red-400 font-medium">Delete Account</p>
-                <p className="text-slate-400 text-sm">
+                <p className="text-[#721c24] font-medium">Delete Account</p>
+                <p className="text-[#8b7355] text-sm">
                   Permanently delete your account and all your bookings. This action cannot be undone.
                 </p>
               </div>
@@ -211,12 +211,12 @@ export default function ProfilePage() {
                   type="text"
                   value={deleteConfirm}
                   onChange={(e) => setDeleteConfirm(e.target.value)}
-                  className="border border-slate-600 p-2 rounded bg-slate-700 text-white text-sm w-28"
+                  className="border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] text-sm w-28"
                   placeholder="Type DELETE"
                 />
                 <button
                   onClick={handleDeleteAccount}
-                  className="bg-red-900/50 hover:bg-red-800/50 text-red-300 px-4 py-2 rounded transition-colors text-sm"
+                  className="bg-[#8b5e3c] hover:bg-[#6b4530] text-[#faf8f5] px-4 py-2 rounded transition-colors text-sm cursor-pointer"
                 >
                   Delete Account
                 </button>

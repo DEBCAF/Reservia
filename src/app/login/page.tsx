@@ -41,18 +41,18 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-slate-900">
-      <div className="w-full max-w-md p-8 bg-slate-800 rounded-xl shadow-lg border border-slate-700">
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-[#faf8f5]">
+      <div className="w-full max-w-md p-8 bg-[#f5efe8] rounded-xl shadow-lg border border-[#d4c5b5]">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-white mb-3">{isSigningUp ? 'Sign Up' : 'Log In'}</h1>
-          <div className="bg-slate-700 rounded-lg p-4 mb-4 space-y-2">
-            <p className="text-slate-200 text-sm font-medium">
+          <h1 className="text-2xl font-bold text-[#2c1810] mb-3">{isSigningUp ? 'Sign Up' : 'Log In'}</h1>
+          <div className="bg-[#ede4d8] rounded-lg p-4 mb-4 space-y-2">
+            <p className="text-[#5c3d30] text-sm font-medium">
               Enter your Instagram username to book a timeslot to hang out with DEBCAF.
             </p>
-            <p className="text-slate-400 text-xs">
+            <p className="text-[#8b7355] text-xs">
               Only authorised Instagram accounts can access this site.
             </p>
-            <p className="text-slate-400 text-xs">
+            <p className="text-[#8b7355] text-xs">
               {isSigningUp
                 ? 'New here? Create an account with your IG username and a password of your choice.'
                 : 'Use your IG username and password to sign in.'}
@@ -61,32 +61,32 @@ export default function LoginPage() {
         </div>
         <form onSubmit={handleAuth} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1 text-slate-300">Username</label>
+            <label className="block text-sm font-medium mb-1 text-[#5c3d30]">Username</label>
             <input
               type="text"
               required
-              className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white placeholder-slate-400"
+              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] placeholder-[#8b7355]"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1 text-slate-300">Password</label>
+            <label className="block text-sm font-medium mb-1 text-[#5c3d30]">Password</label>
             <input
               type="password"
               required
-              className="w-full border border-slate-600 p-2 rounded bg-slate-700 text-white placeholder-slate-400"
+              className="w-full border border-[#d4c5b5] p-2 rounded bg-[#f5efe8] text-[#2c1810] placeholder-[#8b7355]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded font-medium transition-colors">
+          <button type="submit" className="w-full bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] py-2 rounded font-medium transition-colors cursor-pointer">
             {isSigningUp ? 'Create Account' : 'Sign In'}
           </button>
         </form>
         <button
           onClick={() => setIsSigningUp(!isSigningUp)}
-          className="w-full text-center text-sm text-blue-400 mt-4 underline hover:text-blue-300"
+          className="w-full text-center text-sm text-[#8b5e3c] mt-4 underline hover:text-[#6b4530] cursor-pointer"
         >
           {isSigningUp ? 'Already have an account? Log in' : 'Need an account? Sign up'}
         </button>
