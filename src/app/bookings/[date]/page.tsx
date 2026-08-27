@@ -9,7 +9,6 @@ interface Booking {
   user_name: string
   start_time: string
   end_time: string
-  note: string
 }
 
 export default function DateDetailPage() {
@@ -41,7 +40,7 @@ export default function DateDetailPage() {
   async function fetchBookings(dateParam: string) {
     const { data } = await supabase
       .from('bookings')
-      .select('*')
+      .select('id, user_id, user_name, start_time, end_time')
       .gte('start_time', `${dateParam}T00:00:00Z`)
       .lt('start_time', `${dateParam}T23:59:59Z`)
       .order('start_time', { ascending: true })
@@ -51,22 +50,7 @@ export default function DateDetailPage() {
   async function handleDeleteBooking(bookingId: string) {
     if (!confirm('Are you sure you want to delete this booking?')) return
 
-    let deleteQuery = supabase
-      .from('bookings')
-      .delete()
-      .eq('id', bookingId)
-    if (user?.app_metadata?.role !== 'admin') {
-      deleteQuery = deleteQuery.eq('user_id', user.id)
-    }
-    const { error } = await deleteQuery
-    
-    if (error) {
-      alert('Failed to delete booking: ' + error.message)
-      return
-    }
-
-    // Send delete notification
-    const deletedBooking = bookings.find(b => b.id === bookingId)
+    const deletedBooking = bookings.find((booking) => booking.id === bookingId)
     if (deletedBooking) {
       try {
         const notifyResponse = await fetch('/api/notify', {
@@ -74,11 +58,6 @@ export default function DateDetailPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'Booking Deleted',
-            userName: deletedBooking.user_name,
-            date: date,
-            startTime: new Date(deletedBooking.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' }),
-            endTime: new Date(deletedBooking.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' }),
-            note: deletedBooking.note,
             bookingId: bookingId,
           }),
         })
@@ -88,6 +67,13 @@ export default function DateDetailPage() {
       } catch (notifyError) {
         console.error('Failed to send notification:', notifyError)
       }
+    }
+
+    const deleteResponse = await fetch(`/api/bookings/${bookingId}`, { method: 'DELETE' })
+    if (!deleteResponse.ok) {
+      const result = await deleteResponse.json().catch(() => null)
+      alert('Failed to delete booking: ' + (result?.error || 'Request failed'))
+      return
     }
     
     // Refresh the bookings list
@@ -160,11 +146,6 @@ export default function DateDetailPage() {
                         {new Date(booking.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} - {new Date(booking.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}
                       </span>
                     </div>
-                    {booking.note && (
-                      <p className="text-[#a89080] mt-3 text-sm bg-[#4a3228] p-3 rounded font-bold break-words max-w-xs">
-                        {booking.note}
-                      </p>
-                    )}
                   </div>
                   {(user?.id === booking.user_id || user?.app_metadata?.role === 'admin') && (
                     <div className="flex gap-2">

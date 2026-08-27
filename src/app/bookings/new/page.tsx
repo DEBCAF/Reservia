@@ -50,13 +50,30 @@ function NewBookingForm() {
     const end = `${date}T${endTime}:00Z`
     const userName = user?.user_metadata?.full_name || user?.email || 'Unknown'
 
-    const { error } = await supabase.from('bookings').insert({
+    const { data: existingBookings, error: availabilityError } = await supabase
+      .from('bookings')
+      .select('id')
+      .lt('start_time', end)
+      .gt('end_time', start)
+
+    if (availabilityError) {
+      alert('Unable to check availability: ' + availabilityError.message)
+      setLoading(false)
+      return
+    }
+    if (existingBookings.length > 0) {
+      alert('That time overlaps another booking.')
+      setLoading(false)
+      return
+    }
+
+    const { data: createdBooking, error } = await supabase.from('bookings').insert({
       user_id: user.id,
       user_name: userName,
       start_time: start,
       end_time: end,
       note,
-    })
+    }).select('id').single()
 
     if (error) {
       alert(error.message)
@@ -69,14 +86,7 @@ function NewBookingForm() {
       const notifyResponse = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'Booking Created',
-          userName: userName,
-          date: date,
-          startTime: startTime,
-          endTime: endTime,
-          note: note,
-        }),
+          body: JSON.stringify({ action: 'Booking Created', bookingId: createdBooking.id }),
       })
       if (!notifyResponse.ok) {
         console.error('Notification failed:', await notifyResponse.text())

@@ -1,40 +1,67 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { createServerSupabaseClient } from '@/src/lib/supabase-server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const allowedActions = new Set(['Booking Created', 'Booking Updated', 'Booking Deleted'])
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;',
+  })[character]!)
+}
 
 export async function POST(request: Request) {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    const supabase = await createServerSupabaseClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return NextResponse.json({ success: false }, { status: 401 })
+
+    if (!process.env.RESEND_API_KEY || !process.env.NOTIFICATION_EMAIL || !process.env.NOTIFICATION_FROM) {
       return NextResponse.json(
-        { success: false, error: 'RESEND_API_KEY is not configured' },
+        { success: false, error: 'Notification service is not configured' },
         { status: 500 }
       )
     }
 
-    const { action, userName, date, startTime, endTime, note, bookingId } = await request.json()
+    const { action, bookingId } = await request.json()
+    if (typeof action !== 'string' || !allowedActions.has(action) || typeof bookingId !== 'string') {
+      return NextResponse.json({ success: false, error: 'Invalid notification' }, { status: 400 })
+    }
 
-    // Configure email message details
-    let subject = `[Booking Alert] ${userName} - ${action.toUpperCase()}`
+    let bookingQuery = supabase.from('bookings').select('id, user_id, user_name, start_time, end_time, note').eq('id', bookingId)
+    if (user.app_metadata?.role !== 'admin') bookingQuery = bookingQuery.eq('user_id', user.id)
+    const { data: booking } = await bookingQuery.single()
+    if (!booking) return NextResponse.json({ success: false }, { status: 404 })
+
+    const userName = escapeHtml(booking.user_name)
+    const date = escapeHtml(booking.start_time.slice(0, 10))
+    const startTime = escapeHtml(booking.start_time.slice(11, 16))
+    const endTime = escapeHtml(booking.end_time.slice(11, 16))
+    const note = escapeHtml(booking.note || 'None')
+    const safeAction = escapeHtml(action)
+
+    const subject = `[Booking Alert] ${userName} - ${safeAction.toUpperCase()}`
     let htmlContent = `
       <h2>Booking Notification</h2>
-      <p><strong>Action:</strong> ${action}</p>
+      <p><strong>Action:</strong> ${safeAction}</p>
       <p><strong>User:</strong> ${userName}</p>
       <p><strong>Date:</strong> ${date}</p>
       <p><strong>Time:</strong> ${startTime} - ${endTime}</p>
-      <p><strong>Note:</strong> ${note || 'None'}</p>
+      <p><strong>Note:</strong> ${note}</p>
     `
 
-    // Add booking ID for update/delete actions
     if (action === 'Booking Updated' || action === 'Booking Deleted') {
-      htmlContent += `<p><strong>Booking ID:</strong> ${bookingId}</p>`
+      htmlContent += `<p><strong>Booking ID:</strong> ${escapeHtml(bookingId)}</p>`
     }
 
-    // Send email using Resend
-    // Note: 'onboarding@resend.dev' is the default free sender domain provided by Resend
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const data = await resend.emails.send({
-      from: 'Booking App <onboarding@resend.dev>',
-      to: ['shinjitakamiya450@gmail.com'], // REPLACE WITH YOUR ACTUAL EMAIL ADDRESS
+      from: process.env.NOTIFICATION_FROM,
+      to: [process.env.NOTIFICATION_EMAIL],
       subject: subject,
       html: htmlContent,
     })

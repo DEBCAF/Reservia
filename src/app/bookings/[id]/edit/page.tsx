@@ -97,20 +97,35 @@ function EditBookingForm() {
     const start = `${date}T${startTime}:00Z`
     const end = `${date}T${endTime}:00Z`
 
-    const { count, error } = await supabase
+    const { data: existingBookings, error: availabilityError } = await supabase
       .from('bookings')
-      .update({
-        start_time: start,
-        end_time: end,
-        note,
-      }, { count: 'exact' })
-      .eq('id', booking.id)
-      .eq('user_id', user.app_metadata?.role === 'admin' ? booking.user_id : user.id)
+      .select('id')
+      .neq('id', booking.id)
+      .lt('start_time', end)
+      .gt('end_time', start)
 
-    if (error || count !== 1) {
+    if (availabilityError) {
+      alert('Unable to check availability: ' + availabilityError.message)
+      setLoading(false)
+      return
+    }
+    if (existingBookings.length > 0) {
+      alert('That time overlaps another booking.')
+      setLoading(false)
+      return
+    }
+
+    const updateResponse = await fetch(`/api/bookings/${booking.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ start_time: start, end_time: end, note }),
+    })
+
+    if (!updateResponse.ok) {
+      const result = await updateResponse.json().catch(() => null)
       alert(
         'Failed to update booking: ' +
-          (error?.message || 'No booking was updated. Check your Supabase UPDATE policy.')
+          (result?.error || 'No booking was updated.')
       )
       setLoading(false)
       return
@@ -122,13 +137,7 @@ function EditBookingForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: 'Booking Updated',
-          userName: booking.user_name,
-          date: date,
-          startTime: startTime,
-          endTime: endTime,
-          note: note,
-          bookingId: booking.id,
+          action: 'Booking Updated', bookingId: booking.id,
         }),
       })
       if (!notifyResponse.ok) {
@@ -148,41 +157,24 @@ function EditBookingForm() {
 
     setLoading(true)
 
-    let deleteQuery = supabase
-      .from('bookings')
-      .delete()
-      .eq('id', booking.id)
-    if (user.app_metadata?.role !== 'admin') {
-      deleteQuery = deleteQuery.eq('user_id', user.id)
-    }
-    const { error } = await deleteQuery
-
-    if (error) {
-      alert('Failed to delete booking: ' + error.message)
-      setLoading(false)
-      return
-    }
-
-    // Send delete notification
     try {
       const notifyResponse = await fetch('/api/notify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'Booking Deleted',
-          userName: booking.user_name,
-          date: date,
-          startTime: startTime,
-          endTime: endTime,
-          note: note,
-          bookingId: booking.id,
-        }),
+        body: JSON.stringify({ action: 'Booking Deleted', bookingId: booking.id }),
       })
-      if (!notifyResponse.ok) {
-        console.error('Notification failed:', await notifyResponse.text())
-      }
+      if (!notifyResponse.ok) console.error('Notification failed:', await notifyResponse.text())
     } catch (notifyError) {
       console.error('Failed to send notification:', notifyError)
+    }
+
+    const deleteResponse = await fetch(`/api/bookings/${booking.id}`, { method: 'DELETE' })
+
+    if (!deleteResponse.ok) {
+      const result = await deleteResponse.json().catch(() => null)
+      alert('Failed to delete booking: ' + (result?.error || 'Request failed'))
+      setLoading(false)
+      return
     }
 
     router.push(`/bookings/${date}`)

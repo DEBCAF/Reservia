@@ -9,7 +9,6 @@ interface Booking {
   user_name: string
   start_time: string
   end_time: string
-  note: string
 }
 
 export default function Home() {
@@ -33,7 +32,7 @@ export default function Home() {
   }, [])
 
   async function fetchBookings() {
-    const { data } = await supabase.from('bookings').select('*')
+    const { data } = await supabase.from('bookings').select('id, user_id, user_name, start_time, end_time')
     if (data) setBookings(data)
   }
 
