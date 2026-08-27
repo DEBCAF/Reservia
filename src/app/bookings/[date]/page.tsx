@@ -9,6 +9,7 @@ interface Booking {
   user_name: string
   start_time: string
   end_time: string
+  note?: string
 }
 
 export default function DateDetailPage() {
@@ -38,13 +39,16 @@ export default function DateDetailPage() {
   }, [params])
 
   async function fetchBookings(dateParam: string) {
+    const selectFields = user?.app_metadata?.role === 'admin'
+      ? 'id, user_id, user_name, start_time, end_time, note'
+      : 'id, user_id, user_name, start_time, end_time'
     const { data } = await supabase
       .from('bookings')
-      .select('id, user_id, user_name, start_time, end_time')
+      .select(selectFields)
       .gte('start_time', `${dateParam}T00:00:00Z`)
       .lt('start_time', `${dateParam}T23:59:59Z`)
       .order('start_time', { ascending: true })
-    if (data) setBookings(data)
+    if (data) setBookings(data as unknown as Booking[])
   }
 
   async function handleDeleteBooking(bookingId: string) {
@@ -146,6 +150,11 @@ export default function DateDetailPage() {
                         {new Date(booking.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} - {new Date(booking.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}
                       </span>
                     </div>
+                    {user?.app_metadata?.role === 'admin' && booking.note && (
+                      <p className="text-[#a89080] mt-3 text-sm bg-[#4a3228] p-3 rounded font-bold break-words max-w-xs">
+                        {booking.note}
+                      </p>
+                    )}
                   </div>
                   {(user?.id === booking.user_id || user?.app_metadata?.role === 'admin') && (
                     <div className="flex gap-2">
