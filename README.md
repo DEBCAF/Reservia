@@ -1,6 +1,6 @@
 # Reservini
 
-Personal booking app for hangout purposes. You can also rewrite it to fit your own booking workflow.
+Personal booking app for hangout purposes. It is currently coded to me, so you can also rewrite it to fit your own booking workflow.
 
 ## Features
 
