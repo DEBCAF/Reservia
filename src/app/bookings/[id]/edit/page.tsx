@@ -181,106 +181,99 @@ function EditBookingForm() {
   }
 
   if (fetching || !user) {
-    return <div className="min-h-screen bg-[#2c1810] text-[#faf8f5] p-8">Loading...</div>
+    return <div className="min-h-screen bg-[#1b120d] text-[#f9f0e8] p-8">Loading...</div>
   }
 
   return (
-    <main className="min-h-screen bg-[#2c1810] text-[#faf8f5]">
+    <main className="min-h-screen bg-[#1b120d] text-[#f9f0e8]">
       <div className="p-6 max-w-2xl mx-auto">
         <button
           onClick={() => router.back()}
-          className="text-[#a89080] hover:text-[#faf8f5] transition-colors mb-4 cursor-pointer font-bold"
+          className="text-[#d9b997] hover:text-[#fffaf5] transition-colors mb-4 cursor-pointer font-bold"
         >
           ← Back
         </button>
-        <h1 className="text-3xl font-bold mb-1">Edit Booking</h1>
-        <p className="text-[#a89080] text-sm mb-6">
+        <h1 className="text-3xl font-bold mb-1 text-[#fffaf5]">Edit Booking</h1>
+        <p className="text-[#d9b997] text-sm mb-6">
           {date ? new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Select a date from the calendar'}
         </p>
-        {/* Booking Form */}
-        <form onSubmit={handleUpdateBooking} className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 shadow-lg space-y-6">
-          {/* User Info */}
-          <div className="bg-[#4a3228] p-4 rounded-lg">
-            <label className="block text-sm font-bold text-[#a89080]">Booked as</label>
+        <form onSubmit={handleUpdateBooking} className="bg-[#231612] rounded-xl border border-[#d99a4a]/25 p-6 shadow-[0_16px_30px_rgba(0,0,0,0.2)] space-y-6">
+          <div className="bg-[#4a3124] p-4 rounded-lg">
+            <label className="block text-sm font-bold text-[#f0c98d]">Booked as</label>
             <input
               type="text"
               disabled
-              className="w-full border border-[#4a3228] p-2 rounded bg-[#4a3228] text-[#faf8f5]"
+              className="w-full border border-[#d99a4a]/30 p-2 rounded bg-[#4a3124] text-[#fffaf5]"
               value={user.user_metadata?.full_name || user.email}
             />
           </div>
 
-          {/* Date */}
           <div>
-            <label className="block text-sm font-bold text-[#a89080]">Date</label>
+            <label className="block text-sm font-bold text-[#f0c98d]">Date</label>
             <input
               type="date"
               required
               min={todayStr}
               max={maxDateStr}
-              className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
+              className="w-full border border-[#d99a4a]/35 p-2 rounded bg-[#2a1d16] text-[#fffaf5]"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
 
-          {/* Time Selection */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-bold text-[#a89080]">Start Time</label>
+              <label className="block text-sm font-bold text-[#f0c98d]">Start Time</label>
               <input
                 type="time"
                 required
-                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
+                className="w-full border border-[#d99a4a]/35 p-2 rounded bg-[#2a1d16] text-[#fffaf5]"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-[#a89080]">End Time</label>
+              <label className="block text-sm font-bold text-[#f0c98d]">End Time</label>
               <input
                 type="time"
                 required
-                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
+                className="w-full border border-[#d99a4a]/35 p-2 rounded bg-[#2a1d16] text-[#fffaf5]"
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
               />
             </div>
           </div>
 
-          {/* Note */}
           <div>
-            <label className="block text-sm font-bold text-[#a89080]">
-              Note <span className="text-[#a89080]">(optional, private to admin)</span>
+            <label className="block text-sm font-bold text-[#f0c98d]">
+              Note <span className="text-[#d9b997]">(optional, private to admin)</span>
             </label>
             <input
               type="text"
               maxLength={200}
-              className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5]"
+              className="w-full border border-[#d99a4a]/35 p-2 rounded bg-[#2a1d16] text-[#fffaf5]"
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Add a private note..."
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
             className={`w-full py-3 rounded-lg font-semibold transition-colors ${
               loading
-                ? 'bg-[#d4c5b5] text-[#8b7355] cursor-not-allowed'
-                : 'bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] cursor-pointer'
+                ? 'bg-[#d9b997] text-[#4a3124] cursor-not-allowed'
+                : 'bg-[#4a3124] hover:bg-[#5d3b2d] text-[#fffaf5] cursor-pointer'
             }`}
           >
             {loading ? 'Updating...' : 'Update Booking'}
           </button>
 
-          {/* Delete Button */}
           <button
             type="button"
             onClick={handleDeleteBooking}
-            className="w-full py-3 rounded-lg font-semibold bg-[#8b5e3c] hover:bg-[#6b4530] text-[#faf8f5] transition-colors cursor-pointer"
+            className="w-full py-3 rounded-lg font-semibold bg-[#b7682d] hover:bg-[#9a5627] text-[#fffaf5] transition-colors cursor-pointer"
           >
             Delete Booking
           </button>
@@ -292,7 +285,7 @@ function EditBookingForm() {
 
 export default function EditBookingPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#faf8f5] text-[#2c1810] p-8">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#1b120d] text-[#f9f0e8] p-8">Loading...</div>}>
       <EditBookingForm />
     </Suspense>
   )

@@ -81,28 +81,26 @@ export default function ProfilePage() {
     }
   }
 
-  if (loading) return <div className="min-h-screen bg-[#2c1810] text-[#faf8f5] p-8">Loading...</div>
+  if (loading) return <div className="min-h-screen bg-[#1b120d] text-[#f9f0e8] p-8">Loading...</div>
 
   const displayName = user?.user_metadata?.full_name || user?.email || 'Unknown'
 
   return (
-    <main className="min-h-screen bg-[#2c1810] text-[#faf8f5]">
+    <main className="min-h-screen bg-[#1b120d] text-[#f9f0e8]">
       <div className="p-6 max-w-2xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => router.back()}
-            className="text-[#a89080] hover:text-[#faf8f5] transition-colors mb-2 cursor-pointer font-bold"
+            className="text-[#d9b997] hover:text-[#fffaf5] transition-colors mb-2 cursor-pointer font-bold"
           >
             ← Back
           </button>
-          <h1 className="text-3xl font-bold">Profile</h1>
+          <h1 className="text-3xl font-bold text-[#fffaf5]">Profile</h1>
         </div>
 
-        {/* User Info */}
-        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 mb-6">
+        <div className="bg-[#231612] rounded-xl border border-[#d99a4a]/25 p-6 mb-6 shadow-[0_16px_30px_rgba(0,0,0,0.2)]">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 rounded-full bg-[#8b5e3c] flex items-center justify-center text-lg font-bold text-[#faf8f5]">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#f0c98d] to-[#b7682d] flex items-center justify-center text-lg font-bold text-[#1b120d]">
               {displayName
                 .split(' ')
                 .map((n: string) => n[0])
@@ -111,15 +109,15 @@ export default function ProfilePage() {
                 .slice(0, 2)}
             </div>
             <div>
-              <h2 className="text-xl font-bold">{displayName}</h2>
-              <p className="text-[#a89080] text-sm">{user.email}</p>
+              <h2 className="text-xl font-bold text-[#fffaf5]">{displayName}</h2>
+              <p className="text-[#d9b997] text-sm">{user.email}</p>
             </div>
           </div>
-          <div className="bg-[#4a3228] rounded-lg p-4 space-y-2">
-            <p className="text-[#a89080] text-sm">
+          <div className="bg-[#4a3124] rounded-lg p-4 space-y-2">
+            <p className="text-[#f3d8b5] text-sm">
               <span className="font-bold">Account ID:</span> {user.id}
             </p>
-            <p className="text-[#a89080] text-sm">
+            <p className="text-[#f3d8b5] text-sm">
               <span className="font-bold">Joined:</span>{' '}
               {new Date(user.created_at).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -130,25 +128,23 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Message */}
         {message && (
           <div
             className={`mb-6 p-4 rounded-lg text-sm font-bold ${
               messageType === 'success'
-                ? 'bg-[#1a3a2a] text-[#7dcea0] border border-[#2d5a3d]'
-                : 'bg-[#3a1a1a] text-[#f5a0a0] border border-[#5a2d2d]'
+                ? 'bg-[#1f3d2b] text-[#d4f2db] border border-[#4b8b66]'
+                : 'bg-[#3a1e1e] text-[#f7d5d5] border border-[#a96161]'
             }`}
           >
             {message}
           </div>
         )}
 
-        {/* Change Password */}
-        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 mb-6">
-          <h3 className="text-lg font-bold mb-4">Change Password</h3>
+        <div className="bg-[#231612] rounded-xl border border-[#d99a4a]/25 p-6 mb-6 shadow-[0_16px_30px_rgba(0,0,0,0.2)]">
+          <h3 className="text-lg font-bold mb-4 text-[#fffaf5]">Change Password</h3>
           <form onSubmit={handleChangePassword} className="space-y-4">
             <div>
-              <label className="block text-sm font-bold mb-1 text-[#a89080]">
+              <label className="block text-sm font-bold mb-1 text-[#f0c98d]">
                 New Password
               </label>
               <input
@@ -156,12 +152,12 @@ export default function ProfilePage() {
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5] placeholder-[#a89080]"
+                className="w-full border border-[#d99a4a]/50 p-2 rounded bg-[#2a1d16] text-[#fffaf5] placeholder-[#d9b997]"
                 placeholder="Enter new password"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1 text-[#a89080]">
+              <label className="block text-sm font-medium mb-1 text-[#f0c98d]">
                 Confirm Password
               </label>
               <input
@@ -169,40 +165,39 @@ export default function ProfilePage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5] placeholder-[#a89080]"
+                className="w-full border border-[#d99a4a]/50 p-2 rounded bg-[#2a1d16] text-[#fffaf5] placeholder-[#d9b997]"
                 placeholder="Confirm new password"
               />
             </div>
             <button
               type="submit"
-              className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
+              className="bg-[#4a3124] hover:bg-[#5d3b2d] text-[#fffaf5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
             >
               Update Password
             </button>
           </form>
         </div>
 
-        {/* Danger Zone */}
-        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] p-6 mb-6">
-          <h3 className="text-lg font-bold mb-4">Danger Zone</h3>
+        <div className="bg-[#231612] rounded-xl border border-[#d99a4a]/25 p-6 mb-6 shadow-[0_16px_30px_rgba(0,0,0,0.2)]">
+          <h3 className="text-lg font-bold mb-4 text-[#fffaf5]">Danger Zone</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#a89080]">Log Out</p>
-                <p className="text-[#a89080] text-sm">Sign out of your account on this device</p>
+                <p className="text-[#f3d8b5]">Log Out</p>
+                <p className="text-[#d9b997] text-sm">Sign out of your account on this device</p>
               </div>
               <button
                 onClick={handleSignOut}
-                className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
+                className="bg-[#4a3124] hover:bg-[#5d3b2d] text-[#fffaf5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
               >
                 Log Out
               </button>
             </div>
-            <hr className="border-[#4a3228]" />
+            <hr className="border-[#d99a4a]/20" />
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-[#a89080] font-medium">Delete Account</p>
-                <p className="text-[#a89080] text-sm">
+                <p className="text-[#f3d8b5] font-medium">Delete Account</p>
+                <p className="text-[#d9b997] text-sm">
                   Permanently delete your account and all your bookings. This action cannot be undone.
                 </p>
               </div>
@@ -211,12 +206,12 @@ export default function ProfilePage() {
                   type="text"
                   value={deleteConfirm}
                   onChange={(e) => setDeleteConfirm(e.target.value)}
-                  className="border border-[#4a3228] p-2 rounded bg-[#2c1810] text-[#faf8f5] text-sm w-28"
+                  className="border border-[#d99a4a]/40 p-2 rounded bg-[#2a1d16] text-[#fffaf5] text-sm w-28"
                   placeholder="Type DELETE"
                 />
                 <button
                   onClick={handleDeleteAccount}
-                  className="bg-[#2c1810] hover:bg-[#3d2518] text-[#faf8f5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
+                  className="bg-[#4a3124] hover:bg-[#5d3b2d] text-[#fffaf5] px-6 py-2 rounded font-medium transition-colors cursor-pointer"
                 >
                   Delete Account
                 </button>
