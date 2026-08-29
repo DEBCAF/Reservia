@@ -108,51 +108,47 @@ export default function Home() {
   for (let d = 1; d <= daysInMonth; d++) calendarDays.push(d)
 
   return (
-    <main className="min-h-screen bg-[#2c1810] text-[#faf8f5]">
+    <main className="min-h-screen text-[#eef4ff]">
       <div className="p-6 max-w-5xl mx-auto">
-        {/* Calendar */}
-        <div className="bg-[#1a0f09] rounded-xl border border-[#4a3228] shadow-lg overflow-hidden">
-          {/* Month Navigation */}
-          <div className="flex justify-between items-center p-4 border-b border-[#4a3228]">
+        <div className="rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(19,29,47,0.96),rgba(14,22,37,0.96))] shadow-[0_24px_70px_rgba(2,6,23,0.7)] overflow-hidden ring-1 ring-white/5">
+          <div className="flex justify-between items-center p-4 border-b border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(255,184,87,0.18),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.05),transparent)]">
             <button
               onClick={prevMonth}
               disabled={!canGoPrev}
-              className={`px-3 py-1 rounded font-bold transition-colors ${
+              className={`px-3 py-2 rounded-lg font-bold transition-colors ${
                 !canGoPrev
-                  ? 'text-[#4a3228] cursor-not-allowed'
-                  : 'text-[#a89080] hover:text-[#faf8f5] hover:bg-[#4a3228] cursor-pointer'
+                  ? 'text-slate-500 cursor-not-allowed'
+                  : 'text-[#f6d08d] hover:text-white hover:bg-[#2d3d5d] cursor-pointer'
               }`}
             >
               ← Prev
             </button>
-            <h2 className="text-xl font-bold">{monthName}</h2>
+            <h2 className="text-xl font-bold text-white">{monthName}</h2>
             <button
               onClick={nextMonth}
               disabled={!canGoNext}
-              className={`px-3 py-1 rounded font-bold transition-colors ${
+              className={`px-3 py-2 rounded-lg font-bold transition-colors ${
                 !canGoNext
-                  ? 'text-[#4a3228] cursor-not-allowed'
-                  : 'text-[#a89080] hover:text-[#faf8f5] hover:bg-[#4a3228] cursor-pointer'
+                  ? 'text-slate-500 cursor-not-allowed'
+                  : 'text-[#7ef0d1] hover:text-white hover:bg-[#2d3d5d] cursor-pointer'
               }`}
             >
               Next →
             </button>
           </div>
 
-          {/* Day Names */}
-          <div className="grid grid-cols-7 border-b border-[#4a3228]">
+          <div className="grid grid-cols-7 border-b border-white/10 bg-[#1d2b42]">
             {dayNames.map((day) => (
-              <div key={day} className="text-center py-3 text-sm font-bold text-[#a89080] border-r border-[#4a3228] last:border-r-0">
+              <div key={day} className="text-center py-3 text-sm font-bold text-[#dfeafc] border-r border-white/10 last:border-r-0">
                 {day}
               </div>
             ))}
           </div>
 
-          {/* Calendar Grid */}
           <div className="grid grid-cols-7">
             {calendarDays.map((day, idx) => {
               if (day === null) {
-                return <div key={`empty-${idx}`} className="min-h-[100px] border-r border-b border-[#4a3228] bg-[#1a0f09]/50" />
+                return <div key={`empty-${idx}`} className="min-h-[110px] border-r border-b border-white/10 bg-[#101a2c]/70" />
               }
 
               const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
@@ -165,26 +161,26 @@ export default function Home() {
                   key={day}
                   onClick={past ? undefined : () => goToDate(day)}
                   className={`
-                    min-h-[100px] p-2 border-r border-b border-[#4a3228] text-left transition-all font-bold
+                    min-h-[110px] p-2 border-r border-b border-white/10 text-left transition-all font-bold
                     ${past
-                      ? 'bg-[#2c1810] text-[#4a3228] cursor-not-allowed opacity-50'
+                      ? 'bg-[#0f1729] text-slate-500 cursor-not-allowed opacity-50'
                       : has
-                        ? 'bg-[#4a3228] hover:bg-[#5c3d30] cursor-pointer'
-                        : 'bg-[#1a0f09] hover:bg-[#4a3228] cursor-pointer'}
+                        ? 'bg-[linear-gradient(180deg,rgba(255,184,87,0.18),rgba(30,41,59,0.95))] hover:bg-[linear-gradient(180deg,rgba(255,184,87,0.24),rgba(39,49,72,0.98))] cursor-pointer'
+                        : 'bg-[#101a2c] hover:bg-[#1b2941] cursor-pointer'}
                   `}
                 >
-                  <span className={`text-lg font-bold ${past ? 'text-[#4a3228]' : has ? 'text-[#8b5e3c]' : 'text-[#a89080]'}`}>
+                  <span className={`text-lg font-bold ${past ? 'text-slate-500' : has ? 'text-[#ffb857]' : 'text-[#dfeafc]'}`}>
                     {day}
                   </span>
                   {has && (
                     <div className="mt-1 space-y-1">
-                      {bookingsByDate[dateStr]?.slice(0, 2).slice(0, 2).map((b) => (
-                        <div key={b.id} className="text-xs text-[#a89080] truncate">
+                      {bookingsByDate[dateStr]?.slice(0, 2).map((b) => (
+                        <div key={b.id} className="text-[11px] text-slate-200 truncate rounded-md bg-white/5 px-1.5 py-0.5">
                           {b.user_name} · {new Date(b.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}
                         </div>
                       ))}
                       {count > 2 && (
-                        <div className="text-xs text-[#8b5e3c] font-bold">+{count - 2} more</div>
+                        <div className="text-[11px] text-[#7ef0d1] font-bold">+{count - 2} more</div>
                       )}
                     </div>
                   )}
