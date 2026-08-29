@@ -48,7 +48,6 @@ export default function Home() {
   const currentYear = now.getFullYear()
   const currentMonthNum = now.getMonth()
 
-  // 2 years from now
   const maxDate = new Date(currentYear, currentMonthNum + 24, 1)
   const maxYear = maxDate.getFullYear()
   const maxMonth = maxDate.getMonth()
@@ -93,7 +92,6 @@ export default function Home() {
   }
 
   const isPastDate = (day: number) => {
-    // Only relevant for current month
     if (!isCurrentMonth) return false
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
     const today = new Date()
