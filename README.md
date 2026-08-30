@@ -2,11 +2,18 @@
 
 Personal booking app for hangout purposes. It is currently coded to me, so you can also rewrite it to fit your own booking workflow.
 
+Therefore, you should not be able to experience the app from my Vercel link, feel free to clone the repo and deploy it on yours to try!
+
 ## Features
 
 - Exclusivity as only whitelisted usernames can access
 - Able to book a time slot on any present or future day up to 2 years in advance
 - Email notifications can be set up via Resend
+
+## What you can do to personalise this website
+
+- Change the header and other instances where it shows my username to your name/company
+- Add your own API keys to your own .env.local and ensure they are updated accordingly on your Vercel interface
 
 ## Technology Stack
 
