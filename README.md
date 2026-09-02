@@ -1,4 +1,4 @@
-# Reservini
+# Reservia
 
 Personal booking app for hangout purposes. It is currently coded to me, so you can also rewrite it to fit your own booking workflow.
 
@@ -17,7 +17,7 @@ Therefore, you should not be able to experience the app from my Vercel link, fee
 
 ## Technology Stack
 
-- Node.js backend
+- Next.js backend
 - Supabase database
 - Vercel app deployment
 - Resend email notifications
