@@ -4,6 +4,8 @@ Personal booking app for hangout purposes. It is currently coded to me, so you c
 
 Therefore, you should not be able to experience the app from my Vercel link, feel free to clone the repo and deploy it on yours to try!
 
+You can look at how the home page looks like through my GitHub page: https://debcaf.github.io/Reservia/ 
+
 ## Features
 
 - Exclusivity as only whitelisted usernames can access
