@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservini</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+      :root {
+        --background: #1b120d;
+        --foreground: #f9f0e8;
+        --font-playfair: "Playfair Display";
+        --font-source: "Source Serif 4";
+      }
+
+      html {
+        background: var(--background);
+      }
+
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(217, 154, 74, 0.18), transparent 24%),
+          radial-gradient(circle at top right, rgba(183, 104, 45, 0.14), transparent 20%),
+          linear-gradient(180deg, #1b120d 0%, #2c1d16 32%, #1b120d 100%);
+        color: var(--foreground);
+        font-family: var(--font-source), Georgia, "Times New Roman", Times, serif;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: var(--font-playfair), Georgia, "Times New Roman", Times, serif;
+        letter-spacing: -0.03em;
+      }
+
+      button,
+      a {
+        transition: all 180ms ease;
+      }
+
+      ::selection {
+        background: rgba(217, 154, 74, 0.3);
+        color: var(--foreground);
+      }
+    </style>
+  </head>
+  <body class="min-h-full flex flex-col">
+    <header class="border-b border-[#6e4c3a]/40 bg-[#20120d]/95 backdrop-blur-md shadow-[0_8px_24px_rgba(29,17,14,0.45)]">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f0c98d] via-[#d99a4a] to-[#b7682d] shadow-[0_10px_24px_rgba(183,104,45,0.4)] flex items-center justify-center cursor-pointer ring-2 ring-[#f7e2bf]/30 group-hover:scale-105">
+            <svg class="w-5 h-5 text-[#1b120d]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-[#fffaf5]">Reservia</h1>
+            <p class="text-xs text-[#d9b997]">Book your time with me</p>
+          </div>
+        </a>
+
+        <a
+          href="#"
+          class="flex items-center gap-2 bg-[#452d1e] hover:bg-[#5a3728] text-[#fffaf5] px-3 py-2 rounded-xl transition-colors cursor-pointer font-bold shadow-[0_8px_20px_rgba(69,45,30,0.35)] ring-1 ring-[#f0c98d]/20"
+        >
+          <div class="w-7 h-7 rounded-full bg-gradient-to-br from-[#f0c98d] to-[#d99a4a] text-[#1b120d] flex items-center justify-center text-xs font-black">
+            JL
+          </div>
+          <span class="text-sm hidden sm:inline">Jordan Lee</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="flex-1">
+      <main class="min-h-screen text-[#f9f0e8]">
+        <div class="p-6 max-w-5xl mx-auto">
+          <div class="rounded-2xl border border-[#f0c98d]/15 bg-[#231612] shadow-[0_24px_70px_rgba(29,17,14,0.75)] overflow-hidden ring-1 ring-[#f0c98d]/10">
+            <div class="flex justify-between items-center p-4 border-b border-[#f0c98d]/10 bg-[radial-gradient(circle_at_top_left,_rgba(217,154,74,0.22),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent)]">
+              <button id="prev-month" type="button" class="px-3 py-2 rounded-lg font-bold transition-colors">
+                ← Prev
+              </button>
+              <h2 id="month-title" class="text-xl font-bold text-[#fffaf5]"></h2>
+              <button id="next-month" type="button" class="px-3 py-2 rounded-lg font-bold transition-colors">
+                Next →
+              </button>
+            </div>
+
+            <div class="grid grid-cols-7 border-b border-[#f0c98d]/10 bg-[#351f18]">
+              <div class="text-center py-3 text-sm font-bold text-[#f0d9b8] border-r border-[#f0c98d]/10">Sun</div>
+              <div class="text-center py-3 text-sm font-bold text-[#f0d9b8] border-r border-[#f0c98d]/10">Mon</div>
+              <div class="text-center py-3 text-sm font-bold text-[#f0d9b8] border-r border-[#f0c98d]/10">Tue</div>
+              <div class="text-center py-3 text-sm font-bold text-[#f0d9b8] border-r border-[#f0c98d]/10">Wed</div>
+              <div class="text-center py-3 text-sm font-bold text-[#f0d9b8] border-r border-[#f0c98d]/10">Thu</div>
+              <div class="text-center py-3 text-sm font-bold text-[#f0d9b8] border-r border-[#f0c98d]/10">Fri</div>
+              <div class="text-center py-3 text-sm font-bold text-[#f0d9b8]">Sat</div>
+            </div>
+
+            <div id="calendar-grid" class="grid grid-cols-7"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const sampleBookings = [
+        { id: "1", user_name: "Jordan Lee", start_time: isoAt(3, 10, 0) },
+        { id: "2", user_name: "Sam Okonkwo", start_time: isoAt(3, 14, 30) },
+        { id: "3", user_name: "Priya Shah", start_time: isoAt(12, 9, 0) },
+        { id: "4", user_name: "Jordan Lee", start_time: isoAt(12, 11, 30) },
+        { id: "5", user_name: "Chris Nguyen", start_time: isoAt(12, 16, 0) },
+        { id: "6", user_name: "Alex Rivera", start_time: isoAt(18, 13, 0) },
+        { id: "7", user_name: "Morgan Ellis", start_time: isoAt(21, 15, 30) },
+        { id: "8", user_name: "Jordan Lee", start_time: isoAt(21, 17, 0) },
+      ];
+
+      function isoAt(day, hour, minute) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const lastDay = new Date(year, month + 1, 0).getDate();
+        const safeDay = Math.min(day, lastDay);
+        return new Date(Date.UTC(year, month, safeDay, hour, minute, 0)).toISOString();
+      }
+
+      const bookingsByDate = {};
+      for (const booking of sampleBookings) {
+        const date = booking.start_time.split("T")[0];
+        if (!bookingsByDate[date]) bookingsByDate[date] = [];
+        bookingsByDate[date].push(booking);
+      }
+
+      let currentMonth = new Date();
+      currentMonth.setDate(1);
+
+      const monthTitle = document.getElementById("month-title");
+      const calendarGrid = document.getElementById("calendar-grid");
+      const prevButton = document.getElementById("prev-month");
+      const nextButton = document.getElementById("next-month");
+
+      function pad(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function dateKey(year, month, day) {
+        return `${year}-${pad(month + 1)}-${pad(day)}`;
+      }
+
+      function formatTime(iso) {
+        return new Date(iso).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZone: "UTC",
+        });
+      }
+
+      function render() {
+        const year = currentMonth.getFullYear();
+        const month = currentMonth.getMonth();
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonthNum = now.getMonth();
+        const maxDate = new Date(currentYear, currentMonthNum + 24, 1);
+        const isCurrentMonth = year === currentYear && month === currentMonthNum;
+        const canGoPrev = !isCurrentMonth;
+        const canGoNext = !(
+          year > maxDate.getFullYear() ||
+          (year === maxDate.getFullYear() && month >= maxDate.getMonth())
+        );
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDayOfWeek = new Date(year, month, 1).getDay();
+        const todayStr = now.toISOString().split("T")[0];
+
+        monthTitle.textContent = currentMonth.toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        });
+
+        prevButton.disabled = !canGoPrev;
+        nextButton.disabled = !canGoNext;
+        prevButton.className = canGoPrev
+          ? "px-3 py-2 rounded-lg font-bold transition-colors text-[#f0c98d] hover:text-[#fffaf5] hover:bg-[#4a3124] cursor-pointer"
+          : "px-3 py-2 rounded-lg font-bold transition-colors text-[#7a5e4a] cursor-not-allowed";
+        nextButton.className = canGoNext
+          ? "px-3 py-2 rounded-lg font-bold transition-colors text-[#f0c98d] hover:text-[#fffaf5] hover:bg-[#4a3124] cursor-pointer"
+          : "px-3 py-2 rounded-lg font-bold transition-colors text-[#7a5e4a] cursor-not-allowed";
+
+        calendarGrid.replaceChildren();
+
+        for (let i = 0; i < firstDayOfWeek; i++) {
+          const empty = document.createElement("div");
+          empty.className = "min-h-[110px] border-r border-b border-[#f0c98d]/10 bg-[#1d120d]/80";
+          calendarGrid.appendChild(empty);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const key = dateKey(year, month, day);
+          const dayBookings = bookingsByDate[key] || [];
+          const has = dayBookings.length > 0;
+          const past = isCurrentMonth && key < todayStr;
+          const cell = document.createElement("button");
+          cell.type = "button";
+
+          let cellClass =
+            "min-h-[110px] p-2 border-r border-b border-[#f0c98d]/10 text-left transition-all font-bold ";
+          if (past) {
+            cellClass += "bg-[#17100d] text-[#7a5e4a] cursor-not-allowed opacity-50";
+          } else if (has) {
+            cellClass +=
+              "bg-[linear-gradient(180deg,rgba(217,154,74,0.18),rgba(54,33,25,0.98))] hover:bg-[linear-gradient(180deg,rgba(217,154,74,0.28),rgba(69,47,35,1))] cursor-pointer";
+          } else {
+            cellClass += "bg-[#1d120d] hover:bg-[#3a261c] cursor-pointer";
+          }
+          cell.className = cellClass;
+
+          const number = document.createElement("span");
+          number.className = past
+            ? "text-lg font-bold text-[#7a5e4a]"
+            : has
+              ? "text-lg font-bold text-[#f0c98d]"
+              : "text-lg font-bold text-[#f5e4ce]";
+          number.textContent = String(day);
+          cell.appendChild(number);
+
+          if (has) {
+            const list = document.createElement("div");
+            list.className = "mt-1 space-y-1";
+            dayBookings.slice(0, 2).forEach((booking) => {
+              const chip = document.createElement("div");
+              chip.className =
+                "text-[11px] text-[#f8ecdf] truncate rounded-md bg-[#4d3023]/80 px-1.5 py-0.5";
+              chip.textContent = `${booking.user_name} · ${formatTime(booking.start_time)}`;
+              list.appendChild(chip);
+            });
+            if (dayBookings.length > 2) {
+              const more = document.createElement("div");
+              more.className = "text-[11px] text-[#f0c98d] font-bold";
+              more.textContent = `+${dayBookings.length - 2} more`;
+              list.appendChild(more);
+            }
+            cell.appendChild(list);
+          }
+
+          calendarGrid.appendChild(cell);
+        }
+      }
+
+      prevButton.addEventListener("click", () => {
+        if (prevButton.disabled) return;
+        currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+        render();
+      });
+
+      nextButton.addEventListener("click", () => {
+        if (nextButton.disabled) return;
+        currentMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>
