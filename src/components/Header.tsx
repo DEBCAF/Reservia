@@ -39,8 +39,8 @@ export default function Header() {
             </svg>
           </div>
           <div>
-            <h1 className="text-lg font-bold text-[#fffaf5]">Reservini</h1>
-            <p className="text-xs text-[#d9b997]">Book your time with DEBCAF</p>
+            <h1 className="text-lg font-bold text-[#fffaf5]">Reservia</h1>
+            <p className="text-xs text-[#d9b997]">Book your time with me</p>
           </div>
         </Link>
 
