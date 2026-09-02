@@ -14,7 +14,6 @@ function NewBookingForm() {
   const searchParams = useSearchParams()
   const supabase = createClient()
 
-  // Calculate min (today) and max (2 years from now) dates for the date input
   const today = new Date()
   const todayStr = today.toISOString().split('T')[0]
   const maxDate = new Date(today)
@@ -30,7 +29,6 @@ function NewBookingForm() {
       }
       setUser(user)
 
-      // Get date from query parameter
       const dateParam = searchParams.get('date')
       if (dateParam) {
         setDate(dateParam)
@@ -81,7 +79,6 @@ function NewBookingForm() {
       return
     }
 
-    // Call backend notify API
     try {
       const notifyResponse = await fetch('/api/notify', {
         method: 'POST',
